@@ -9,5 +9,6 @@
 		<added>/about command for information about the bot</added>
 		<fixed>/setaccountto and /addtoaccount now show the currency name</fixed>
 		<fixed>/openaccount now show the currency name</fixed>
+		<fixed>transfers outside the integer limit caused log error</fixed>
 	</Version>
 </changelog>

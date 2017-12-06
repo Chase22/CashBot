@@ -28,13 +28,18 @@ public class AddToAccountCommand extends ReplyToCommand {
 	@Override
 	public void executeCommand(AbsSender absSender, User user, Chat chat, Message message, String[] arguments,
 			Integer repliedToID) {
-		int amount = Integer.parseInt(arguments[0]);
-		EntityManager manager = EntityUtility.getEntityManager();
-		Account account = Account.load(manager, repliedToID, chat.getId());
-		CashUser cashUser = CashUser.load(manager, repliedToID);
-		CashChat cashGroup = CashChat.load(manager, account.getGroupID());
-		account.modifyBalance(manager, amount);
-		reply.setText(Messages.getFormatString("AddToAccountCommand.2", cashUser.getName(), account.getBalance(), cashGroup.getCurrencyName()));
+		try {
+			int amount = Integer.parseInt(arguments[0]);
+			EntityManager manager = EntityUtility.getEntityManager();
+			Account account = Account.load(manager, repliedToID, chat.getId());
+			CashUser cashUser = CashUser.load(manager, repliedToID);
+			CashChat cashGroup = CashChat.load(manager, account.getGroupID());
+			account.modifyBalance(manager, amount);
+			reply.setText(Messages.getFormatString("AddToAccountCommand.2", cashUser.getName(), account.getBalance(),
+					cashGroup.getCurrencyName()));
+		} catch (NumberFormatException e) {
+			reply.setText(Messages.getFormatString("IntegerException.1", Integer.MIN_VALUE, Integer.MAX_VALUE));
+		}
 	}
 
 }
