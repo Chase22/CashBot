@@ -7,14 +7,13 @@ import org.chase.telegram.cashbot.commands.base.ReplyToCommand;
 import org.chase.telegram.cashbot.commands.base.filter.AdminCommandFilter;
 import org.chase.telegram.cashbot.commands.base.filter.CashChatCommandFilter;
 import org.chase.telegram.cashbot.data.Account;
+import org.chase.telegram.cashbot.data.CashChat;
 import org.chase.telegram.cashbot.data.CashUser;
 import org.chase.telegram.cashbot.data.EntityUtility;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
-import org.telegram.telegrambots.bots.commandbot.commands.CheckableBotCommand;
 
 public class SetAccountToCommand extends ReplyToCommand {
 	private static final String IDENTIFIER = "setaccountto"; //$NON-NLS-1$
@@ -33,8 +32,9 @@ public class SetAccountToCommand extends ReplyToCommand {
 		EntityManager manager = EntityUtility.getEntityManager();
 		Account account = Account.load(manager, repliedToID, chat.getId());
 		CashUser cashUser = CashUser.load(manager, repliedToID);
+		CashChat cashGroup = CashChat.load(manager, account.getGroupID());
 		account.setBalance(manager, amount);
-		reply.setText(Messages.getFormatString("AddToAccountCommand.2", cashUser.getName(), account.getBalance()));
+		reply.setText(Messages.getFormatString("AddToAccountCommand.2", cashUser.getName(), account.getBalance(), cashGroup.getCurrencyName()));
 	}
 
 }

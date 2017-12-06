@@ -5,7 +5,6 @@ import java.util.Arrays;
 import javax.persistence.EntityManager;
 
 import org.chase.telegram.cashbot.Messages;
-import org.chase.telegram.cashbot.data.Account;
 import org.chase.telegram.cashbot.data.CashUser;
 import org.chase.telegram.cashbot.data.EntityUtility;
 import org.telegram.telegrambots.api.objects.Chat;

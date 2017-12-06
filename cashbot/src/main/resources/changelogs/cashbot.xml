@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE changelog>
+<changelog xmlns="http://www.changelog.org/changelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.changelog.org/changelog changelog.xsd">
+	<Version Version="1.0.0">
+		<added>first public release</added>
+	</Version>
+	<Version Version="1.1.0">
+		<added>/changelog command to show the latest changelog</added>
+		<added>/about command for information about the bot</added>
+		<fixed>/setaccountto and /addtoaccount now show the currency name</fixed>
+		<fixed>/openaccount now show the currency name</fixed>
+	</Version>
+</changelog>

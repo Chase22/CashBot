@@ -21,6 +21,8 @@
 						<index>true</index>
 						<manifest>
 							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 						</manifest>
 						<manifestEntries>
 							<mode>development</mode>
@@ -80,6 +82,11 @@
 			<version>8.0.8-dmr</version>
 		</dependency>
 
+		<dependency>
+			<groupId>xom</groupId>
+			<artifactId>xom</artifactId>
+			<version>1.2.5</version>
+		</dependency>
 
 	</dependencies>
 </project>

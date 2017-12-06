@@ -39,9 +39,10 @@ public class OpenAccountCommand extends CheckableBotCommand {
 				CashUser cashUser = CashUser.create(EntityUtility.getEntityManager(), user.getId(), user.getUserName(), user.getFirstName(), user.getLastName());
 			}
 			Account account = Account.create(manager, user.getId(), chat.getId());
+			CashChat cashGroup = CashChat.load(manager, account.getGroupID());
 			account.setBalance(manager,CashChat.load(manager, chat.getId()).getStartAmount());
 			manager.close();
-			reply.setText(Messages.getFormatString("OpenAccountCommand.2", account.getBalance())); //$NON-NLS-1$
+			reply.setText(Messages.getFormatString("OpenAccountCommand.2", account.getBalance(), cashGroup.getCurrencyName())); //$NON-NLS-1$
 		}
 		if (!reply.getText().isEmpty()) {
 			try {

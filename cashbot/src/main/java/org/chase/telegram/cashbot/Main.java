@@ -21,6 +21,8 @@ public class Main {
 		ApiContextInitializer.init();
 		TelegramBotsApi api = new TelegramBotsApi();
 
+		Changelog.initialise("/changelogs/cashbot.xml");
+		
 		CashBot bot = new CashBot();
 		Logger.getGlobal().setLevel(Level.WARNING);
 		Logger.getGlobal().addHandler(new TelegramHandler(bot, 188215327));
@@ -34,7 +36,6 @@ public class Main {
 			cashBotSession = api.registerBot(bot);
 		} catch (TelegramApiRequestException | SecurityException | IOException e) {
 			BotLogger.error(Main.class.getSimpleName(), e);
-			
 		}
 	}
 

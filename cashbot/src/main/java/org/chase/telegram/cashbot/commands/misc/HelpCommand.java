@@ -1,4 +1,4 @@
-package org.chase.telegram.cashbot.commands;
+package org.chase.telegram.cashbot.commands.misc;
 
 import java.util.ArrayList;
 import java.util.Collections;

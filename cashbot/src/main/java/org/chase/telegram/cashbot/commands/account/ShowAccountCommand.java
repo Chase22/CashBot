@@ -8,7 +8,6 @@ import org.chase.telegram.cashbot.data.Account;
 import org.chase.telegram.cashbot.data.CashChat;
 import org.chase.telegram.cashbot.data.CashUser;
 import org.chase.telegram.cashbot.data.EntityUtility;
-import org.telegram.telegrambots.api.methods.groupadministration.GetChat;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.Message;
@@ -17,8 +16,6 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.bots.commandbot.commands.CheckableBotCommand;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.logging.BotLogger;
-
-import antlr.StringUtils;
 
 public class ShowAccountCommand extends CheckableBotCommand {
 	private static final String IDENTIFIER = "showBalance"; //$NON-NLS-1$

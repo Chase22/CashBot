@@ -2,7 +2,6 @@ package org.chase.telegram.cashbot.bot;
 
 import javax.persistence.EntityManager;
 
-import org.chase.telegram.cashbot.commands.HelpCommand;
 import org.chase.telegram.cashbot.commands.StartCommand;
 import org.chase.telegram.cashbot.commands.StopCommand;
 import org.chase.telegram.cashbot.commands.account.AddToAccountCommand;
@@ -13,21 +12,22 @@ import org.chase.telegram.cashbot.commands.account.ShowAllAccountsCommand;
 import org.chase.telegram.cashbot.commands.account.TransferToAccountCommand;
 import org.chase.telegram.cashbot.commands.config.ConfigSetCommand;
 import org.chase.telegram.cashbot.commands.config.ConfigShowCommand;
+import org.chase.telegram.cashbot.commands.misc.AboutCommand;
+import org.chase.telegram.cashbot.commands.misc.ChangelogCommand;
+import org.chase.telegram.cashbot.commands.misc.HelpCommand;
 import org.chase.telegram.cashbot.data.Account;
 import org.chase.telegram.cashbot.data.CashChat;
 import org.chase.telegram.cashbot.data.CashUser;
 import org.chase.telegram.cashbot.data.EntityUtility;
-import org.telegram.telegrambots.api.methods.GetUserProfilePhotos;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.api.objects.UserProfilePhotos;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class CashBot extends TelegramLongPollingCommandBot {
 
-	public final static String TOKEN = "472345994:AAHnW06NymPiMK8tvPBayz2TtGL_hAwS9jE"; //$NON-NLS-1$
+	//public final static String TOKEN = "472345994:AAHnW06NymPiMK8tvPBayz2TtGL_hAwS9jE"; //$NON-NLS-1$
+	public final static String TOKEN = "340581395:AAFtbKSPPt25sCRiPWg7fP66o_zE1U9U-aA"; //$NON-NLS-1$
 	public final static String USERNAME = "rpcashbot"; //$NON-NLS-1$
 
 	/**
@@ -68,6 +68,8 @@ public class CashBot extends TelegramLongPollingCommandBot {
 		register(new AddToAccountCommand());
 		register(new SetAccountToCommand());
 		register(new TransferToAccountCommand());
+		register(new AboutCommand());
+		register(new ChangelogCommand());
 		
 		for (CashChat.Configs value : CashChat.Configs.values()) {
 			register(new ConfigSetCommand(value));

@@ -3,7 +3,6 @@ package org.chase.telegram.cashbot.commands.account;
 import javax.persistence.EntityManager;
 
 import org.chase.telegram.cashbot.Messages;
-import org.chase.telegram.cashbot.commands.base.filter.AccountCommandFilter;
 import org.chase.telegram.cashbot.commands.base.filter.CashUserCommandFilter;
 import org.chase.telegram.cashbot.data.Account;
 import org.chase.telegram.cashbot.data.CashChat;
