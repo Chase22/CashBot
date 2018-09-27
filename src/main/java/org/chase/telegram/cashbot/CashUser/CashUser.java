@@ -11,8 +11,8 @@ public class CashUser {
     private String lastName;
 
     public CashUser(CashUserEntity cashUserEntity) {
-        userId = cashUserEntity.getUserID();
-        chatId = cashUserEntity.getChatID();
+        userId = cashUserEntity.getUserId();
+        chatId = cashUserEntity.getChatId();
         username = cashUserEntity.getUsername();
         firstName = cashUserEntity.getFirstName();
         lastName = cashUserEntity.getLastName();

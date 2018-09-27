@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CashUserService {
@@ -13,8 +14,8 @@ public class CashUserService {
         this.cashUserRepository = Objects.requireNonNull(cashUserRepository, "cashUserRepository");
     }
 
-    public CashUser getById(long userId) {
-        return new CashUser(cashUserRepository.getOne(userId));
+    public Optional<CashUser> getById(int userId) {
+        return cashUserRepository.findByUserId(userId).map(CashUser::new);
     }
 
     public List<CashUser> getForChatId(String chatId) {

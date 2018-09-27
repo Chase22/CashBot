@@ -12,8 +12,8 @@ import javax.persistence.Table;
 public class CashUserEntity{
 
     @Id
-    private long userID;
-    private String chatID;
+    private long userId;
+    private String chatId;
     private String username;
     private String firstName;
     private String lastName;
