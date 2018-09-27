@@ -21,8 +21,22 @@ public class CashChatService {
         this.accountService = requireNonNull(accountService, "accountService");
     }
 
+    public CashChat createDefault(String chatId) {
+        CashChatEntity newChat = new CashChatEntity(
+                chatId,
+                10,
+                10,
+                10,
+                10,
+                10,
+                10,
+                "Muns");
+        cashChatRepository.save(newChat);
+        return new CashChat(newChat);
+    }
+
     public Optional<CashChat> getChatChatById(String chatId) {
-        return cashChatRepository.findByChatID(chatId).map(CashChat::new);
+        return cashChatRepository.findByChatId(chatId).map(CashChat::new);
     }
 
     public void handleMessage(Message message) {

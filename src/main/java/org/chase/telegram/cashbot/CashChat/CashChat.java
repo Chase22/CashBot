@@ -1,8 +1,10 @@
 package org.chase.telegram.cashbot.CashChat;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CashChat {
 
 
@@ -16,7 +18,7 @@ public class CashChat {
     private String currencyName;
 
     public CashChat(final CashChatEntity cashChatEntity) {
-        chatId = cashChatEntity.getChatID();
+        chatId = cashChatEntity.getChatId();
         startAmount = cashChatEntity.getStartAmount();
         amountPic = cashChatEntity.getAmountPic();
         amountSticker = cashChatEntity.getAmountPic();
