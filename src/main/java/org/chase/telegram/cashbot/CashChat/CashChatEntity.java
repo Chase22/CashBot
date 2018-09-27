@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity(name = "cashchat")
-@Table(name = "chat")
+@Table(name = "cashbot_chat")
 @Data
 public class CashChatEntity {
     @Id

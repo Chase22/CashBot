@@ -1,38 +1,34 @@
 package org.chase.telegram.cashbot.bot;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.logging.Logger;
-
 @Component
+@Slf4j
 public class CashBot extends TelegramLongPollingCommandBot {
-    public static Logger LOGGER = Logger.getLogger(CashBot.class.getName());
 
-    @Value("telegram.bot.name")
-    public static String BOT_USERNAME;
+    private final String botToken;
 
-    @Value("telegram.bot.token")
-    public static String BOT_TOKEN;
-
-    public CashBot() {
-        super(new DefaultBotOptions(), true, BOT_USERNAME);
+    public CashBot(@Value("${telegram.bot.name}") final String bot_username, @Value("${telegram.bot.token}") String bot_token) {
+        super(bot_username);
+        botToken = bot_token;
+        registerCommands();
     }
 
     @Override
     public void processNonCommandUpdate(Update update) {
         if (update.hasMessage()) {
-            LOGGER.info(update.getMessage().getText());
+            log.info(update.getMessage().getText());
         }
     }
 
     @Override
     public String getBotToken() {
-        return null;
+        return botToken;
     }
 
     private void registerCommands() {
