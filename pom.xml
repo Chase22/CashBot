@@ -5,11 +5,11 @@
 
     <groupId>org.chase.telegram</groupId>
     <artifactId>cashbot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>cashbot</name>
-    <description></description>
+    <description>A telegrambot for a virtual currency</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -53,6 +53,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambotsextensions</artifactId>
+            <version>4.1</version>
         </dependency>
     </dependencies>
 
