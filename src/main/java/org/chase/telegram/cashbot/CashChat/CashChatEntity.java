@@ -17,5 +17,7 @@ public class CashChatEntity {
     private int amountPic;
     private int amountVoice;
     private int amountSticker;
+    private int amountOther;
     private String currencyName;
+
 }
