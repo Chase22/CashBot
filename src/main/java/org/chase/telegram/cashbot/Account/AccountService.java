@@ -1,4 +1,4 @@
-package Account;
+package org.chase.telegram.cashbot.Account;
 
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public List<Account> getAccountsByChatId(String chatId) {
+    public List<Account> getAccountsByChatId(String groupId) {
         return accountRepository
-                .findAllByAccountIdentityChatId(chatId)
+                .findAllByAccountIdentityGroupId(groupId)
                 .stream()
                 .map(Account::new)
                 .collect(Collectors.toList());

@@ -1,4 +1,4 @@
-package Account;
+package org.chase.telegram.cashbot.Account;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity(name = "cashchat")
-@Table(name = "chat")
+@Table(name = "cashbot_chat")
 @Data
 public class AccountEntity {
     @EmbeddedId

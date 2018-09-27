@@ -1,10 +1,10 @@
-package Account;
+package org.chase.telegram.cashbot.Account;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, AccountIdentity> {
-    List<AccountEntity> findAllByAccountIdentityChatId(String chatId);
+    List<AccountEntity> findAllByAccountIdentityGroupId(String groupId);
     List<AccountEntity> findAllByAccountIdentityUserId(long userId);
 }

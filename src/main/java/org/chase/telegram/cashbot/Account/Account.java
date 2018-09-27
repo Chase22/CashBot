@@ -1,10 +1,10 @@
-package Account;
+package org.chase.telegram.cashbot.Account;
 
 import lombok.Data;
 
 @Data
 public class Account {
-    private long groupId;
+    private String groupId;
     private int userId;
     private int balance;
 
