@@ -3,6 +3,7 @@ package org.chase.telegram.cashbot.Account;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,11 +22,15 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
-    public List<Account> getAccountsByUserId(long userId) {
+    public List<Account> getAccountsByUserId(int userId) {
         return accountRepository
                 .findAllByAccountIdentityUserId(userId)
                 .stream()
                 .map(Account::new)
                 .collect(Collectors.toList());
+    }
+
+    public Optional<Account> getAccount(int userId, String groupId) {
+        return accountRepository.findByAccountIdentity(new AccountIdentity(groupId, userId)).map(Account::new);
     }
 }
