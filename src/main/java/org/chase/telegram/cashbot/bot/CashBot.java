@@ -7,16 +7,21 @@ import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingC
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import static java.util.Objects.requireNonNull;
+
 @Component
 @Slf4j
 public class CashBot extends TelegramLongPollingCommandBot {
 
     private final String botToken;
+    private final CommandRegisterService commandRegisterService;
 
-    public CashBot(@Value("${telegram.bot.name}") final String bot_username, @Value("${telegram.bot.token}") String bot_token) {
+    public CashBot(@Value("${telegram.bot.name}") final String bot_username, @Value("${BOT_TOKEN}") final String bot_token, final CommandRegisterService commandRegisterService) {
         super(bot_username);
-        botToken = bot_token;
-        registerCommands();
+        botToken = requireNonNull(bot_token, "bot_token");
+
+        this.commandRegisterService = requireNonNull(commandRegisterService, "commandRegisterService");
+        commandRegisterService.registerCommands(this, new HelpCommand());
     }
 
     @Override
@@ -31,9 +36,4 @@ public class CashBot extends TelegramLongPollingCommandBot {
         return botToken;
     }
 
-    private void registerCommands() {
-        registerAll(
-                new HelpCommand()
-        );
-    }
 }
