@@ -1,6 +1,5 @@
 package org.chase.telegram.cashbot.commands;
 
-import org.chase.telegram.cashbot.CashChat.CashBotReply;
 import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.CashUser.CashUser;
@@ -34,26 +33,32 @@ public class StartCommand extends CashCommand {
     @Override
     protected Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException{
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            Optional<CashChat> optionalCashChat = cashChatService.getChatChatById(chat.getId().toString());
+            Optional<CashChat> optionalCashChat = cashChatService.getChatChatById(chat.getId());
 
             if (optionalCashChat.isPresent()) {
                 return Optional.of(new CashBotReply(optionalCashChat.get().getChatId(), "Bot already running"));
             } else {
                 if (GroupUtils.isAdministrator(absSender, chat, user)) {
-                    CashChat cashChat = cashChatService.createDefault(chat.getId().toString());
-                    return Optional.of(new CashBotReply("Bot started %s", cashChat.getChatId(), cashChat));
+                    CashChat cashChat = cashChatService.createDefault(chat.getId());
+                    return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat));
                 } else {
-                    return Optional.of(new CashBotReply("This command is only to be used by Administrators", chat.getId().toString()));
+                    return Optional.of(new CashBotReply(chat.getId(), "This command is only to be used by Administrators"));
                 }
             }
         } else if (chat.isUserChat()) {
             Optional<CashUser> cashUserOptional = cashUserService.getById(user.getId());
             if (cashUserOptional.isPresent()) {
-                return Optional.of(new CashBotReply("Bot already running", chat.getId().toString()));
-            } else if (cashUserOptional.get().getChatId().isEmpty()) {
-                return Optional.of(new CashBotReply("Chat registered", chat.getId().toString()));
+                CashUser cashUser = cashUserOptional.get();
+                if (cashUser.getChatId() == 0) {
+                    cashUser.setChatId(chat.getId());
+                    cashUserService.save(cashUser);
+                    return Optional.of(new CashBotReply(chat.getId(), "Chat registered"));
+                } else {
+                    return Optional.of(new CashBotReply(chat.getId(), "Bot already running"));
+                }
             } else {
-                return Optional.of(new CashBotReply("User registered", chat.getId().toString()));
+                cashUserService.save(new CashUser(user.getId(), chat.getId(), user.getUserName(), user.getFirstName(), user.getLastName()));
+                return Optional.of(new CashBotReply(chat.getId(), "User registered"));
             }
         }
         return Optional.empty();
