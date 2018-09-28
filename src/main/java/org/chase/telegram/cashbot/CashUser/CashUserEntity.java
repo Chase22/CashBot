@@ -1,19 +1,23 @@
 package org.chase.telegram.cashbot.CashUser;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name = "cashUser")
+@Entity(name = "cashuser")
 @Table(name = "cashbot_user")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CashUserEntity{
 
     @Id
-    private long userId;
-    private String chatId;
+    private int userId;
+    private long chatId;
     private String username;
     private String firstName;
     private String lastName;

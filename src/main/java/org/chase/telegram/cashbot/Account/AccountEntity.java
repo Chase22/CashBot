@@ -6,8 +6,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity(name = "cashchat")
-@Table(name = "cashbot_chat")
+@Entity(name = "cashaccount")
+@Table(name = "cashbot_acccount")
 @Data
 public class AccountEntity {
     @EmbeddedId

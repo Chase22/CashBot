@@ -12,6 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Embeddable
 class AccountIdentity implements Serializable {
-    private String groupId;
+    private long groupId;
     private int userId;
 }

@@ -1,7 +1,6 @@
 package org.chase.telegram.cashbot.CashChat;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.Account.Account;
 import org.chase.telegram.cashbot.Account.AccountService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -21,7 +20,7 @@ public class CashChatService {
         this.accountService = requireNonNull(accountService, "accountService");
     }
 
-    public CashChat createDefault(String chatId) {
+    public CashChat createDefault(long chatId) {
         CashChatEntity newChat = new CashChatEntity(
                 chatId,
                 10,
@@ -35,12 +34,12 @@ public class CashChatService {
         return new CashChat(newChat);
     }
 
-    public Optional<CashChat> getChatChatById(String chatId) {
+    public Optional<CashChat> getChatChatById(long chatId) {
         return cashChatRepository.findByChatId(chatId).map(CashChat::new);
     }
 
     public void handleMessage(Message message) {
-        getChatChatById(message.getChatId().toString()).ifPresent(chat -> {
+        getChatChatById(message.getChatId()).ifPresent(chat -> {
             accountService.getAccount(message.getFrom().getId(), chat.getChatId()).ifPresent(account -> {
                 if (message.hasText()) {
                     account.addToBalance(chat.getAmountText());

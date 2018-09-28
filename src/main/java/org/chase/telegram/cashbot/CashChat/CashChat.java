@@ -8,7 +8,7 @@ import lombok.Data;
 public class CashChat {
 
 
-    private String chatId;
+    private long chatId;
     private int startAmount;
     private int amountText;
     private int amountPic;
@@ -17,7 +17,7 @@ public class CashChat {
     private int amountOther;
     private String currencyName;
 
-    public CashChat(final CashChatEntity cashChatEntity) {
+    CashChat(final CashChatEntity cashChatEntity) {
         chatId = cashChatEntity.getChatId();
         startAmount = cashChatEntity.getStartAmount();
         amountPic = cashChatEntity.getAmountPic();

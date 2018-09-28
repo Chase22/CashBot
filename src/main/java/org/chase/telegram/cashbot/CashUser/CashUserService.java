@@ -21,4 +21,8 @@ public class CashUserService {
     public List<CashUser> getForChatId(String chatId) {
         return null;
     }
+
+    public CashUserEntity save(final CashUser cashUser) {
+        return cashUserRepository.save(cashUser.toEntity());
+    }
 }

@@ -1,7 +1,6 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.CashChat.CashBotReply;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.ManCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;

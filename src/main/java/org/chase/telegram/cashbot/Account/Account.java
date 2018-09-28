@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class Account {
-    private String groupId;
+    private long groupId;
     private int userId;
     private int balance;
 

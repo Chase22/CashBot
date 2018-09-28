@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, AccountIdentity> {
-    List<AccountEntity> findAllByAccountIdentityGroupId(String groupId);
-    List<AccountEntity> findAllByAccountIdentityUserId(long userId);
+    List<AccountEntity> findAllByAccountIdentityGroupId(long groupId);
+    List<AccountEntity> findAllByAccountIdentityUserId(int userId);
 
     Optional<AccountEntity> findByAccountIdentity(AccountIdentity accountIdentity);
 }

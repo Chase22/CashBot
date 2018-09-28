@@ -14,7 +14,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public List<Account> getAccountsByChatId(String groupId) {
+    public List<Account> getAccountsByChatId(long groupId) {
         return accountRepository
                 .findAllByAccountIdentityGroupId(groupId)
                 .stream()
@@ -30,7 +30,7 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Account> getAccount(int userId, String groupId) {
+    public Optional<Account> getAccount(int userId, long groupId) {
         return accountRepository.findByAccountIdentity(new AccountIdentity(groupId, userId)).map(Account::new);
     }
 }

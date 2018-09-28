@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 public class CashChatEntity {
     @Id
-    private String chatId;
+    private long chatId;
     private int startAmount;
     private int amountText;
     private int amountPic;

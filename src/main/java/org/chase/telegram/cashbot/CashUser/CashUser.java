@@ -1,11 +1,13 @@
 package org.chase.telegram.cashbot.CashUser;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CashUser {
-    private long userId;
-    private String chatId;
+    private int userId;
+    private long chatId;
     private String username;
     private String firstName;
     private String lastName;
@@ -16,5 +18,9 @@ public class CashUser {
         username = cashUserEntity.getUsername();
         firstName = cashUserEntity.getFirstName();
         lastName = cashUserEntity.getLastName();
+    }
+
+    public CashUserEntity toEntity() {
+        return new CashUserEntity(userId, chatId, username, firstName, lastName);
     }
 }
