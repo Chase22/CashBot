@@ -11,7 +11,7 @@ class CashBotReply{
     private long chatId;
     private String message;
 
-    CashBotReply(long chatId, String message, Object... args) {
+    public CashBotReply(long chatId, String message, Object... args) {
         this.message = String.format(message, args);
         this.chatId = chatId;
     }
