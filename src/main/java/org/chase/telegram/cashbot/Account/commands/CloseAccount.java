@@ -2,6 +2,7 @@ package org.chase.telegram.cashbot.Account.commands;
 
 import org.chase.telegram.cashbot.Account.AccountService;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
@@ -23,28 +24,27 @@ public class CloseAccount extends CashCommand {
 
     private final AccountService accountService;
     private final CashChatService cashChatService;
-    private final VerifierService verifierService;
-    private final FlagService flagService;
+    private final CashChatService cashUserService;
 
-    public CloseAccount(final AccountService accountService, final CashChatService cashChatService, final VerifierService verifierService, final FlagService flagService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
+    public CloseAccount(final AccountService accountService, final CashChatService cashChatService, final VerifierService verifierService, final CashChatService cashUserService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
 
         this.accountService = requireNonNull(accountService, "accountService");
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-        this.verifierService = requireNonNull(verifierService, "verifierService");
-        this.flagService = requireNonNull(flagService, "flagService");
+        this.cashUserService = cashUserService;
+    }
+
+
+    @Override
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+        cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
+        cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
+        accountService.getAccount(user.getId(), chat.getId()).orElseThrow(() -> new VerificationException("No Account found"));
     }
 
     @Override
     protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) {
-        return Optional.of(verifierService.verifyIsCashChat(chat.getId()).orElseGet(() ->
-                verifierService.verifyIsCashUser(user.getId(), chat.getId()).orElseGet(() ->
-                        verifierService.verifyUserHasAccount(user.getId(), chat.getId()).orElseGet(() -> {
-                            accountService.deleteAccount(accountService.getAccount(user.getId(), chat.getId()).get());
-
-                            return new CashBotReply(chat.getId(), "Your Account has been closed");
-                        })
-                )
-        ));
+        accountService.deleteAccount(accountService.getAccount(user.getId(), chat.getId()).get());
+        return Optional.of(new CashBotReply(chat.getId(), "Your Account has been closed"));
     }
 }

@@ -1,10 +1,9 @@
 package org.chase.telegram.cashbot.commands;
 
-import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.CashUser.CashUser;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
-import org.chase.telegram.cashbot.bot.GroupUtils;
+import org.chase.telegram.cashbot.VerificationException;
+import org.chase.telegram.cashbot.VerifierService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -21,45 +20,31 @@ public class StartCommand extends CashCommand {
 	private static final String DESCRIPTION = "";
 	private static final String EXTENDED_DESCRIPTION = "";
 
-	private final CashChatService cashChatService;
-    private final CashUserService cashUserService;
+    private final StartCommandGroup startCommandGroup;
+    private final StartCommandUser startCommandUser;
 
-    public StartCommand(CashChatService cashChatService, CashUserService cashUserService) {
-		super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
-        this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-        this.cashUserService = requireNonNull(cashUserService, "cashUserService");
+    public StartCommand(final VerifierService verifierService, final StartCommandGroup startCommandGroup, final StartCommandUser startCommandUser) {
+		super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
+        this.startCommandGroup = requireNonNull(startCommandGroup, "startCommandGroup");
+        this.startCommandUser = requireNonNull(startCommandUser, "startCommandUser");
+    }
+
+    @Override
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+        if (chat.isGroupChat() || chat.isSuperGroupChat()) {
+            startCommandGroup.verify(user, chat, arguments, verifierService);
+        } else if (chat.isUserChat()) {
+            startCommandUser.verify(user, chat, arguments, verifierService);
+        }
+        throw new VerificationException("This bot can only be used in Private or Group chats");
     }
 
     @Override
     protected Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException{
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            Optional<CashChat> optionalCashChat = cashChatService.getById(chat.getId());
-
-            if (optionalCashChat.isPresent()) {
-                return Optional.of(new CashBotReply(optionalCashChat.get().getChatId(), "Bot already running"));
-            } else {
-                if (GroupUtils.isAdministrator(absSender, chat, user)) {
-                    CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());
-                    return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat));
-                } else {
-                    return Optional.of(new CashBotReply(chat.getId(), "This command is only to be used by Administrators"));
-                }
-            }
+            return startCommandGroup.executeCommand(absSender, user, chat, arguments);
         } else if (chat.isUserChat()) {
-            Optional<CashUser> cashUserOptional = cashUserService.getById(user.getId());
-            if (cashUserOptional.isPresent()) {
-                CashUser cashUser = cashUserOptional.get();
-                if (cashUser.getChatId() == 0) {
-                    cashUser.setChatId(chat.getId());
-                    cashUserService.save(cashUser);
-                    return Optional.of(new CashBotReply(chat.getId(), "Chat registered"));
-                } else {
-                    return Optional.of(new CashBotReply(chat.getId(), "Bot already running"));
-                }
-            } else {
-                cashUserService.save(new CashUser(user.getId(), chat.getId(), user.getUserName(), user.getFirstName(), user.getLastName()));
-                return Optional.of(new CashBotReply(chat.getId(), "User registered"));
-            }
+            return startCommandUser.executeCommand(absSender, user, chat, arguments);
         }
         return Optional.empty();
     }

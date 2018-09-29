@@ -2,10 +2,10 @@ package org.chase.telegram.cashbot.Account.commands;
 
 import org.chase.telegram.cashbot.Account.Account;
 import org.chase.telegram.cashbot.Account.AccountService;
-import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.CashUser.CashUser;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
+import org.chase.telegram.cashbot.VerificationException;
+import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
+//TODO Split into User and Group Subclasses
 @Component
 public class ShowAccounts extends CashCommand {
     private static final String IDENTIFIER = "showAccounts";
@@ -27,11 +28,20 @@ public class ShowAccounts extends CashCommand {
     private final CashChatService cashChatService;
     private final CashUserService cashUserService;
 
-    public ShowAccounts(final AccountService accountService, final CashChatService cashChatService, final CashUserService cashUserService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
+    public ShowAccounts(final AccountService accountService, final CashChatService cashChatService, final CashUserService cashUserService, final VerifierService verifierService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
         this.accountService = requireNonNull(accountService, "accountService");
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
         this.cashUserService = requireNonNull(cashUserService, "cashUserService");
+    }
+
+    @Override
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+        if(chat.isUserChat()) {
+            cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
+        } else if (chat.isGroupChat()) {
+            cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
+        }
     }
 
     @Override
@@ -45,47 +55,38 @@ public class ShowAccounts extends CashCommand {
     }
 
     private Optional<CashBotReply> handleGroupChat(final Chat chat) {
-        Optional<CashChat> cashChatOptional = cashChatService.getById(chat.getId());
+        StringBuilder replyBuilder = new StringBuilder();
+        replyBuilder.append(String.format("Accounts for Chat %s %n", chat.getTitle()));
+        for (Account account : accountService.getAccountsByChatId(chat.getId())) {
+            cashUserService.getById(account.getUserId()).ifPresent( cashUser -> {
+                String accountLine = String.format(
+                        "%s %s: %s %n",
+                        cashUser.getFirstName(),
+                        cashUser.getLastName(),
+                        account.getBalance()
+                );
 
-        if (cashChatOptional.isPresent()) {
-            StringBuilder replyBuilder = new StringBuilder();
-            replyBuilder.append(String.format("Accounts for Chat %s", chat.getTitle()));
-            for (Account account : accountService.getAccountsByChatId(chat.getId())) {
-                cashUserService.getById(account.getUserId()).ifPresent( cashUser -> {
-                    String accountLine = String.format(
-                            "%s %s: %s",
-                            cashUser.getFirstName(),
-                            cashUser.getLastName(),
-                            account.getBalance()
-                    );
-
-                    replyBuilder.append(accountLine);
-                });
-            }
-            return Optional.of(new CashBotReply(chat.getId(), replyBuilder.toString()));
+                replyBuilder.append(accountLine);
+            });
         }
-        return Optional.of(new CashBotReply(chat.getId(), "Group is not registered with the bot"));
+        return Optional.of(new CashBotReply(chat.getId(), replyBuilder.toString()));
+
     }
 
     private Optional<CashBotReply> handleUserChat(final User user) {
-        Optional<CashUser> cashUserOptional = cashUserService.getById(user.getId());
+        StringBuilder replyBuilder = new StringBuilder();
+        replyBuilder.append(String.format("Accounts for User %s %s %n", user.getFirstName(), user.getLastName()));
+        for (Account account : accountService.getAccountsByUserId(user.getId())) {
+            cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
+                String accountLine = String.format(
+                        "%s: %s %n",
+                        cashChat.getTitle(),
+                        account.getBalance()
+                );
 
-        if (cashUserOptional.isPresent()) {
-            StringBuilder replyBuilder = new StringBuilder();
-            replyBuilder.append(String.format("Accounts for User %s %s", user.getFirstName(), user.getLastName()));
-            for (Account account : accountService.getAccountsByUserId(user.getId())) {
-                cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
-                    String accountLine = String.format(
-                            "%s: %s",
-                            cashChat.getTitle(),
-                            account.getBalance()
-                    );
-
-                    replyBuilder.append(accountLine);
-                });
-            }
-            return Optional.of(new CashBotReply(user.getId(), replyBuilder.toString()));
+                replyBuilder.append(accountLine);
+            });
         }
-        return Optional.of(new CashBotReply(user.getId(), "You are not registered with the Bot"));
+        return Optional.of(new CashBotReply(user.getId(), replyBuilder.toString()));
     }
 }

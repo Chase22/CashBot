@@ -1,8 +1,9 @@
 package org.chase.telegram.cashbot.CashUser.commands;
 
-import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashUser.CashUser;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
+import org.chase.telegram.cashbot.VerificationException;
+import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
@@ -21,23 +22,25 @@ public class ShowMe extends CashCommand {
 
     private final CashUserService cashUserService;
 
-    public ShowMe(final CashUserService cashUserService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
+    public ShowMe(final CashUserService cashUserService, final VerifierService verifierService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
         this.cashUserService = cashUserService;
     }
 
     @Override
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+        cashUserService.getById(user.getId()).orElseThrow(() -> {
+            return new VerificationException("You are not registered with the bot");
+        });
+    }
+
+    @Override
     protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) throws TelegramApiException {
-        Optional<CashUser> optionalCashUser = cashUserService.getById(user.getId());
-        if (optionalCashUser.isPresent()) {
-            CashUser cashUser = optionalCashUser.get();
-            return Optional.of(new CashBotReply(chat.getId(),
-                    "Name: %s %s %n" +
-                            "Username: %s %n" +
-                            "UserId: %s %n",
-                    cashUser.getFirstName(), cashUser.getLastName(), cashUser.getUsername(), cashUser.getUserId()));
-        } else {
-            return Optional.of(new CashBotReply(chat.getId(), "You are not registered with the bot"));
-        }
+        CashUser cashUser = cashUserService.getById(user.getId()).get();
+        return Optional.of(new CashBotReply(chat.getId(),
+                "Name: %s %s %n" +
+                        "Username: %s %n" +
+                        "UserId: %s %n",
+                cashUser.getFirstName(), cashUser.getLastName(), cashUser.getUsername(), cashUser.getUserId()));
     }
 }
