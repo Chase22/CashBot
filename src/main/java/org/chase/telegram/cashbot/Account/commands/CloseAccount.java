@@ -35,10 +35,10 @@ public class CloseAccount extends CashCommand {
 
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
-        cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
-        accountService.getAccount(user.getId(), chat.getId()).orElseThrow(() -> new VerificationException("No Account found"));
+    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not started"));
+        cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
+        accountService.getAccount(message.getFrom().getId(), message.getChatId()).orElseThrow(() -> new VerificationException("No Account found"));
     }
 
     @Override

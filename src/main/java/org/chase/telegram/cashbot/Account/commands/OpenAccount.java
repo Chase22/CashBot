@@ -7,9 +7,7 @@ import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -33,9 +31,9 @@ public class OpenAccount extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
-        if (accountService.getAccount(user.getId(), chat.getId()).isPresent()) {
+    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not started"));
+        if (accountService.getAccount(message.getFrom().getId(), message.getChatId()).isPresent()) {
             throw new VerificationException("User has already an account");
         }
     }

@@ -28,11 +28,13 @@ public class StartCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        Chat chat = message.getChat();
+
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            startCommandGroup.verify(user, chat, arguments, absSender);
+            startCommandGroup.verify(message, arguments, absSender);
         } else if (chat.isUserChat()) {
-            startCommandUser.verify(user, chat, arguments, absSender);
+            startCommandUser.verify(message, arguments, absSender);
         }
         throw new VerificationException("This bot can only be used in Private or Group chats");
     }

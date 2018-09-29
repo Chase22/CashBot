@@ -8,7 +8,6 @@ import org.chase.telegram.cashbot.bot.GroupUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -28,14 +27,14 @@ public class StartCommandGroup extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        cashChatService.getById(chat.getId()).ifPresent((cashChat) -> new VerificationException("Bot is already running"));
+    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        cashChatService.getById(message.getChat().getId()).ifPresent((cashChat) -> new VerificationException("Bot is already running"));
         try {
-            if (!GroupUtils.isAdministrator(absSender ,chat, user)) {
+            if (!GroupUtils.isAdministrator(absSender , message.getChat(), message.getFrom())) {
                 throw new VerificationException("This command can only be executed by Admins");
             }
         } catch (TelegramApiException e) {
-            log.error("Error checking isAdmin for User {} in chat {}", user.getUserName(), chat.getTitle());
+            log.error("Error checking isAdmin for User {} in chat {}", message.getFrom().getUserName(), message.getChat().getTitle());
         }
     }
 

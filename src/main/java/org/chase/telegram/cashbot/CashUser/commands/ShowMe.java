@@ -6,9 +6,7 @@ import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -28,8 +26,8 @@ public class ShowMe extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
+    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
     }
 
     @Override
