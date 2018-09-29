@@ -7,5 +7,5 @@ jdk:
 
 jobs:
   include:
-  - stage: "Tests"
-    script: "mvn test -B"
+  - stage: Tests
+    script: mvn integration-test -B
