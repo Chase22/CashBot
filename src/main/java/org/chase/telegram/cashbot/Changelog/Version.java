@@ -32,7 +32,7 @@ public class Version implements Comparable<Version>{
 
     @Override
     public String toString() {
-        return String.format("%d.%d.%d", major, minor, patch);
+        return String.join(".", Integer.toString(major), Integer.toString(minor), Integer.toString(patch));
     }
 
     @Override
