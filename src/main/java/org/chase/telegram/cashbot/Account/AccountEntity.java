@@ -2,6 +2,7 @@ package org.chase.telegram.cashbot.Account;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.chase.telegram.cashbot.GroupUserIdentifier;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -13,10 +14,10 @@ import javax.persistence.Table;
 @AllArgsConstructor
 public class AccountEntity {
     @EmbeddedId
-    AccountIdentity accountIdentity;
+    GroupUserIdentifier groupUserIdentifier;
 
     public AccountEntity(final long groupId, final int userId, final int balance) {
-        this.accountIdentity = new AccountIdentity(groupId, userId);
+        this.groupUserIdentifier = new GroupUserIdentifier(groupId, userId);
         this.balance = balance;
     }
 

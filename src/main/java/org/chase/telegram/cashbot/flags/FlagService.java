@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.flags;
 
+import org.chase.telegram.cashbot.GroupUserIdentifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class FlagService {
     }
 
     public Optional<Flag> getFlagForGroupAndUser(long groupId, int userId) {
-        return flagRepository.getByFlagIdentifier(new FlagIdentifier(groupId, userId)).map(FlagEntity::getFlag);
+        return flagRepository.getByGroupUserIdentifier(new GroupUserIdentifier(groupId, userId)).map(FlagEntity::getFlag);
     }
 
     public boolean userHasFlagInGroup(long groupId, int userId, Flag expectedFlag) {

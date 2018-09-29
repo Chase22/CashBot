@@ -1,4 +1,4 @@
-package org.chase.telegram.cashbot.flags;
+package org.chase.telegram.cashbot;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Embeddable
 @Data
 @AllArgsConstructor
-public class FlagIdentifier implements Serializable {
+public class GroupUserIdentifier implements Serializable {
     private long groupId;
-    private int userID;
+    private int userId;
 }

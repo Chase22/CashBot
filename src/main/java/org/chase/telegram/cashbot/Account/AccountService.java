@@ -3,6 +3,7 @@ package org.chase.telegram.cashbot.Account;
 import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.ChatNotRegisteredException;
+import org.chase.telegram.cashbot.GroupUserIdentifier;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -24,7 +25,7 @@ public class AccountService {
 
     public List<Account> getAccountsByChatId(long groupId) {
         return accountRepository
-                .findAllByAccountIdentityGroupId(groupId)
+                .findAllByGroupUserIdentifierGroupId(groupId)
                 .stream()
                 .map(Account::new)
                 .collect(Collectors.toList());
@@ -32,14 +33,14 @@ public class AccountService {
 
     public List<Account> getAccountsByUserId(int userId) {
         return accountRepository
-                .findAllByAccountIdentityUserId(userId)
+                .findAllByGroupUserIdentifierUserId(userId)
                 .stream()
                 .map(Account::new)
                 .collect(Collectors.toList());
     }
 
     public Optional<Account> getAccount(int userId, long groupId) {
-        return accountRepository.findByAccountIdentity(new AccountIdentity(groupId, userId)).map(Account::new);
+        return accountRepository.findByGroupUserIdentifier(new GroupUserIdentifier(groupId, userId)).map(Account::new);
     }
 
     public Account createNew(final Integer userId, final Long chatId) {

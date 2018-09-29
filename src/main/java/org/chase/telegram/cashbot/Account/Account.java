@@ -11,8 +11,8 @@ public class Account {
     private int balance;
 
     Account(final AccountEntity cashChatEntity) {
-        groupId = cashChatEntity.getAccountIdentity().getGroupId();
-        userId = cashChatEntity.getAccountIdentity().getUserId();
+        groupId = cashChatEntity.getGroupUserIdentifier().getGroupId();
+        userId = cashChatEntity.getGroupUserIdentifier().getUserId();
         balance = cashChatEntity.getBalance();
     }
 
