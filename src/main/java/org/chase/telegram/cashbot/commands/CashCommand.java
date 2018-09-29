@@ -26,13 +26,13 @@ public abstract class CashCommand extends ManCommand {
                 verify(message, arguments, absSender);
                 executeCommand(absSender, message, arguments).ifPresent(cashBotReply -> {
                     try {
-                        cashBotReply.sendMessage(absSender);
+                        cashBotReply.sendMessage(absSender, message.getMessageId());
                     } catch (TelegramApiException e) {
                         log.error("Couldn't send Error to chat", e);
                     }
                 });
             } catch (VerificationException e) {
-                absSender.execute(new SendMessage(message.getChatId(), e.getMessage()));
+                absSender.execute(new SendMessage(message.getChatId(), e.getMessage()).setReplyToMessageId(message.getMessageId()));
             }
         } catch (TelegramApiException e) {
             log.error("Error executing command", e);

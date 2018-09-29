@@ -19,7 +19,7 @@ class CashBotReply{
         reply.setChatId(chatId);
     }
 
-    void sendMessage(AbsSender sender) throws TelegramApiException {
-        sender.execute(reply);
+    void sendMessage(AbsSender sender, final Integer messageId) throws TelegramApiException {
+        sender.execute(reply.setReplyToMessageId(messageId));
     }
 }
