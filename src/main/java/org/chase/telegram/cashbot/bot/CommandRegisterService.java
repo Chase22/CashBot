@@ -5,6 +5,7 @@ import org.chase.telegram.cashbot.Account.commands.CloseAccount;
 import org.chase.telegram.cashbot.Account.commands.OpenAccount;
 import org.chase.telegram.cashbot.Account.commands.ShowAccounts;
 import org.chase.telegram.cashbot.CashUser.commands.ShowMe;
+import org.chase.telegram.cashbot.commands.ChangelogCommand;
 import org.chase.telegram.cashbot.commands.StartCommand;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -22,14 +23,16 @@ public class CommandRegisterService {
     private final OpenAccount openAccount;
     private final ShowAccounts showAccounts;
     private final CloseAccount closeAccount;
+    private final ChangelogCommand changelogCommand;
 
     @Inject
-    public CommandRegisterService(final StartCommand startCommand, final ShowMe showMe, final OpenAccount openAccount, final ShowAccounts showAccounts, final CloseAccount closeAccount) {
+    public CommandRegisterService(final StartCommand startCommand, final ShowMe showMe, final OpenAccount openAccount, final ShowAccounts showAccounts, final CloseAccount closeAccount, final ChangelogCommand changelogCommand) {
         this.startCommand = requireNonNull(startCommand, "startCommand");
         this.showMe = requireNonNull(showMe, "showMe");
         this.openAccount = requireNonNull(openAccount, "openAccount");
         this.showAccounts = requireNonNull(showAccounts, "showAccounts");
         this.closeAccount = requireNonNull(closeAccount, "closeAccount");
+        this.changelogCommand = requireNonNull(changelogCommand, "changelogCommand");
     }
 
     void registerCommands(TelegramLongPollingCommandBot bot, IBotCommand... aditionalCommands) {
@@ -43,6 +46,7 @@ public class CommandRegisterService {
         register(bot, openAccount);
         register(bot, showAccounts);
         register(bot, closeAccount);
+        register(bot, changelogCommand);
         log.info("Finish registering commands");
     }
 
