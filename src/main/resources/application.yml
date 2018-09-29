@@ -1,3 +1,5 @@
 telegram:
   bot:
     name: rpg_cashbot
+server:
+  port: ${PORT}
