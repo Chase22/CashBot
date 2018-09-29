@@ -56,6 +56,22 @@ public class AccountService {
         }
     }
 
+    public void transferTo(Account from, Account to, int amount) throws AccountException {
+        if (amount < 0) {
+            throw new AccountException("Amount can not be negative");
+        }
+
+        if (from.getBalance() < amount) {
+            throw new AccountException("Balance not sufficient");
+        }
+
+        from.addToBalance(amount*-1);
+        to.addToBalance(amount);
+
+        accountRepository.save(from.toEntity());
+        accountRepository.save(to.toEntity());
+    }
+
     public void handleMessage(Message message) {
         cashChatService.getById(message.getChatId()).ifPresent(chat -> {
             log.debug("found chat: {}", chat);
