@@ -9,6 +9,7 @@ public class CashChat {
 
 
     private long chatId;
+    private String title;
     private int startAmount;
     private int amountText;
     private int amountPic;
@@ -19,6 +20,7 @@ public class CashChat {
 
     CashChat(final CashChatEntity cashChatEntity) {
         chatId = cashChatEntity.getChatId();
+        title = cashChatEntity.getTitle();
         startAmount = cashChatEntity.getStartAmount();
         amountPic = cashChatEntity.getAmountPic();
         amountSticker = cashChatEntity.getAmountPic();

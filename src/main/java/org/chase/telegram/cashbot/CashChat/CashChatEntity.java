@@ -16,6 +16,7 @@ import javax.persistence.Table;
 public class CashChatEntity {
     @Id
     private long chatId;
+    private String title;
     private int startAmount;
     private int amountText;
     private int amountPic;
