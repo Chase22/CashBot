@@ -25,4 +25,10 @@ public class CashUserService {
     public CashUserEntity save(final CashUser cashUser) {
         return cashUserRepository.save(cashUser.toEntity());
     }
+
+    public Optional<CashUser> getByUsername(final String username) {
+        final String usernameSanitized = username.replace("@", "");
+
+        return cashUserRepository.findByUsername(usernameSanitized).map(CashUser::new);
+    }
 }
