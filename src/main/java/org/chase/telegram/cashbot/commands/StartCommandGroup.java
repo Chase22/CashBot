@@ -24,7 +24,7 @@ public class StartCommandGroup extends CashCommand {
 	private final CashChatService cashChatService;
 
     public StartCommandGroup(CashChatService cashChatService, final VerifierService verifierService) {
-		super(null, null, null, verifierService);
+		super("startCommandGroup", "", "", verifierService);
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
     }
 
