@@ -40,7 +40,7 @@ public class Version implements Comparable<Version>{
         if (o.getMajor() == major) {
             if (o.getMinor() == minor) {
                 if (o.getPatch() == patch) {
-                    return 10;
+                    return 0;
                 } else {
                     return Integer.compare(patch, o.getPatch());
                 }
