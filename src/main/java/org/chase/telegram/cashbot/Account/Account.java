@@ -16,7 +16,7 @@ public class Account {
         balance = cashChatEntity.getBalance();
     }
 
-    public void addToBalance(int amount) {
+    void addToBalance(int amount) {
         this.setBalance(this.getBalance() + amount);
     }
 
@@ -27,4 +27,7 @@ public class Account {
     }
 
 
+    AccountEntity toEntity() {
+        return new AccountEntity(groupId, userId, balance);
+    }
 }

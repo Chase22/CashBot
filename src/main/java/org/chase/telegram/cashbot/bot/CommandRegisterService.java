@@ -1,6 +1,7 @@
 package org.chase.telegram.cashbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
+import org.chase.telegram.cashbot.Account.commands.CloseAccount;
 import org.chase.telegram.cashbot.Account.commands.OpenAccount;
 import org.chase.telegram.cashbot.Account.commands.ShowAccounts;
 import org.chase.telegram.cashbot.CashUser.commands.ShowMe;
@@ -20,13 +21,15 @@ public class CommandRegisterService {
     private final ShowMe showMe;
     private final OpenAccount openAccount;
     private final ShowAccounts showAccounts;
+    private final CloseAccount closeAccount;
 
     @Inject
-    public CommandRegisterService(final StartCommand startCommand, final ShowMe showMe, final OpenAccount openAccount, final ShowAccounts showAccounts) {
+    public CommandRegisterService(final StartCommand startCommand, final ShowMe showMe, final OpenAccount openAccount, final ShowAccounts showAccounts, final CloseAccount closeAccount) {
         this.startCommand = requireNonNull(startCommand, "startCommand");
         this.showMe = requireNonNull(showMe, "showMe");
         this.openAccount = requireNonNull(openAccount, "openAccount");
         this.showAccounts = requireNonNull(showAccounts, "showAccounts");
+        this.closeAccount = requireNonNull(closeAccount, "closeAccount");
     }
 
     void registerCommands(TelegramLongPollingCommandBot bot, IBotCommand... aditionalCommands) {
@@ -39,6 +42,7 @@ public class CommandRegisterService {
         register(bot, showMe);
         register(bot, openAccount);
         register(bot, showAccounts);
+        register(bot, closeAccount);
         log.info("Finish registering commands");
     }
 

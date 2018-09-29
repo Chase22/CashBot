@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.Account;
 
+import lombok.extern.slf4j.Slf4j;
 import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.ChatNotRegisteredException;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 @Service
+@Slf4j
 public class AccountService {
     private final AccountRepository accountRepository;
     private final CashChatService cashChatService;
@@ -56,7 +58,9 @@ public class AccountService {
 
     public void handleMessage(Message message) {
         cashChatService.getById(message.getChatId()).ifPresent(chat -> {
+            log.debug("found chat: {}", chat);
             getAccount(message.getFrom().getId(), chat.getChatId()).ifPresent(account -> {
+                log.debug("found account: {}", account);
                 if (message.hasText()) {
                     account.addToBalance(chat.getAmountText());
                 } else if (message.hasPhoto()) {
@@ -68,8 +72,13 @@ public class AccountService {
                 } else {
                     account.addToBalance(chat.getAmountOther());
                 }
+                accountRepository.save(account.toEntity());
             });
         });
 
+    }
+
+    public void deleteAccount(final Account account) {
+        accountRepository.delete(account.toEntity());
     }
 }

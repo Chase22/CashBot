@@ -8,15 +8,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Data
 public
 class CashBotReply{
-    private long chatId;
-    private String message;
+    private SendMessage reply;
 
     public CashBotReply(long chatId, String message, Object... args) {
-        this.message = String.format(message, args);
-        this.chatId = chatId;
+        reply = new SendMessage(chatId, String.format(message, args));
+    }
+
+    public CashBotReply(long chatId) {
+        reply = new SendMessage();
+        reply.setChatId(chatId);
     }
 
     void sendMessage(AbsSender sender) throws TelegramApiException {
-        sender.execute(new SendMessage(chatId, getMessage()));
+        sender.execute(reply);
     }
 }
