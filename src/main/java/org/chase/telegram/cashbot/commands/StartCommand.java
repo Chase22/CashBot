@@ -33,13 +33,13 @@ public class StartCommand extends CashCommand {
     @Override
     protected Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException{
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            Optional<CashChat> optionalCashChat = cashChatService.getChatChatById(chat.getId());
+            Optional<CashChat> optionalCashChat = cashChatService.getById(chat.getId());
 
             if (optionalCashChat.isPresent()) {
                 return Optional.of(new CashBotReply(optionalCashChat.get().getChatId(), "Bot already running"));
             } else {
                 if (GroupUtils.isAdministrator(absSender, chat, user)) {
-                    CashChat cashChat = cashChatService.createDefault(chat.getId());
+                    CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());
                     return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat));
                 } else {
                     return Optional.of(new CashBotReply(chat.getId(), "This command is only to be used by Administrators"));
