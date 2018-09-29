@@ -5,27 +5,28 @@ import org.chase.telegram.cashbot.Account.AccountException;
 import org.chase.telegram.cashbot.Account.AccountService;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
+import org.chase.telegram.cashbot.bot.GroupUtils;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
 @Component
-public class TransferAmount extends AccountCashCommand {
-    private static final String IDENTIFIER = "transfer";
+public class AddAmount extends AccountCashCommand {
+    private static final String IDENTIFIER = "add";
     private static final String DESCRIPTION = "";
     private static final String EXTENDED_DESCRIPTION = "";
 
     private final AccountService accountService;
     private final CashUserService cashUserService;
 
-    public TransferAmount(final AccountService accountService, final CashUserService cashUserService) {
+    public AddAmount(final AccountService accountService, final CashUserService cashUserService) {
         super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, accountService);
 
         this.accountService = requireNonNull(accountService, "accountService");
@@ -34,24 +35,28 @@ public class TransferAmount extends AccountCashCommand {
 
     @Override
     protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        try {
+            if (!GroupUtils.isAdministrator(absSender, message.getChat(), message.getFrom())) {
+                throw new VerificationException("This command can only be used by admins");
+            }
+        } catch (TelegramApiException e) {
+            throw new VerificationException("Error verifying GroupAdmins");
+        }
+
         super.verify(message, arguments, absSender);
     }
 
     @Override
     protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
-        final User fromUser = message.getFrom();
 
-        final Account fromAccount = accountService.getAccount(fromUser.getId(), chat.getId()).get();
-
-        final Account toAccount;
         try {
-            toAccount = getAccountFromMessage(accountService, cashUserService, message, arguments);
-            accountService.transferTo(fromAccount, toAccount, Integer.parseInt(arguments[1]));
-            return Optional.of(new CashBotReply(chat.getId(), "Transfer complete. New Balance: %s", fromAccount.getBalance()));
+            final Account account = getAccountFromMessage(accountService, cashUserService, message, arguments);
+            account.addToBalance(Integer.parseInt(arguments[arguments.length-1]));
+            return Optional.of(new CashBotReply(chat.getId(), "New Balance: %s", account.getBalance()));
         } catch (AccountException | UserNotFoundException e) {
             return Optional.of(new CashBotReply(chat.getId(), e.getMessage()));
         }
-
     }
+
 }
