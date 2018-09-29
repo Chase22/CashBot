@@ -1,9 +1,9 @@
 package org.chase.telegram.cashbot.commands;
 
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.VerifierService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -21,28 +21,31 @@ public class StartCommand extends CashCommand {
     private final StartCommandGroup startCommandGroup;
     private final StartCommandUser startCommandUser;
 
-    public StartCommand(final VerifierService verifierService, final StartCommandGroup startCommandGroup, final StartCommandUser startCommandUser) {
-		super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
+    public StartCommand(final StartCommandGroup startCommandGroup, final StartCommandUser startCommandUser) {
+		super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
         this.startCommandGroup = requireNonNull(startCommandGroup, "startCommandGroup");
         this.startCommandUser = requireNonNull(startCommandUser, "startCommandUser");
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            startCommandGroup.verify(user, chat, arguments, verifierService, absSender);
+            startCommandGroup.verify(user, chat, arguments, absSender);
         } else if (chat.isUserChat()) {
-            startCommandUser.verify(user, chat, arguments, verifierService, absSender);
+            startCommandUser.verify(user, chat, arguments, absSender);
         }
         throw new VerificationException("This bot can only be used in Private or Group chats");
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException{
+    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException{
+        final Chat chat = message.getChat();
+        final User user = message.getFrom();
+
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            return startCommandGroup.executeCommand(absSender, user, chat, arguments);
+            return startCommandGroup.executeCommand(absSender, message, arguments);
         } else if (chat.isUserChat()) {
-            return startCommandUser.executeCommand(absSender, user, chat, arguments);
+            return startCommandUser.executeCommand(absSender, message, arguments);
         }
         return Optional.empty();
     }

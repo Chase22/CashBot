@@ -5,11 +5,11 @@ import org.chase.telegram.cashbot.Account.AccountService;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
@@ -28,15 +28,15 @@ public class ShowAccounts extends CashCommand {
     private final CashChatService cashChatService;
     private final CashUserService cashUserService;
 
-    public ShowAccounts(final AccountService accountService, final CashChatService cashChatService, final CashUserService cashUserService, final VerifierService verifierService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
+    public ShowAccounts(final AccountService accountService, final CashChatService cashChatService, final CashUserService cashUserService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
         this.accountService = requireNonNull(accountService, "accountService");
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
         this.cashUserService = requireNonNull(cashUserService, "cashUserService");
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
         if(chat.isUserChat()) {
             cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
         } else if (chat.isGroupChat()) {
@@ -45,11 +45,11 @@ public class ShowAccounts extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) {
-        if(chat.isUserChat()) {
-            return handleUserChat(user);
-        } else if (chat.isGroupChat()) {
-            return handleGroupChat(chat);
+    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+        if(message.getChat().isUserChat()) {
+            return handleUserChat(message.getFrom());
+        } else if (message.getChat().isGroupChat()) {
+            return handleGroupChat(message.getChat());
         }
         return Optional.empty();
     }

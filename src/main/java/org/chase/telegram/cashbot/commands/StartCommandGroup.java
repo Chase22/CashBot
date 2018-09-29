@@ -4,11 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.VerifierService;
-import org.chase.telegram.cashbot.bot.CashBot;
 import org.chase.telegram.cashbot.bot.GroupUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -23,13 +22,13 @@ public class StartCommandGroup extends CashCommand {
 
 	private final CashChatService cashChatService;
 
-    public StartCommandGroup(CashChatService cashChatService, final VerifierService verifierService) {
-		super("startCommandGroup", "", "", verifierService);
+    public StartCommandGroup(CashChatService cashChatService) {
+		super("startCommandGroup", "", "");
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
         cashChatService.getById(chat.getId()).ifPresent((cashChat) -> new VerificationException("Bot is already running"));
         try {
             if (!GroupUtils.isAdministrator(absSender ,chat, user)) {
@@ -41,7 +40,9 @@ public class StartCommandGroup extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException{
+    protected Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException{
+        final Chat chat = message.getChat();
+
         CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());
         return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat));
     }

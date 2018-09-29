@@ -3,11 +3,11 @@ package org.chase.telegram.cashbot.CashUser.commands;
 import org.chase.telegram.cashbot.CashUser.CashUser;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -22,22 +22,20 @@ public class ShowMe extends CashCommand {
 
     private final CashUserService cashUserService;
 
-    public ShowMe(final CashUserService cashUserService, final VerifierService verifierService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, verifierService);
+    public ShowMe(final CashUserService cashUserService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
         this.cashUserService = cashUserService;
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
-        cashUserService.getById(user.getId()).orElseThrow(() -> {
-            return new VerificationException("You are not registered with the bot");
-        });
+    protected void verify(final User user, final Chat chat, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) throws TelegramApiException {
-        CashUser cashUser = cashUserService.getById(user.getId()).get();
-        return Optional.of(new CashBotReply(chat.getId(),
+    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException {
+        CashUser cashUser = cashUserService.getById(message.getFrom().getId()).get();
+        return Optional.of(new CashBotReply(message.getChatId(),
                 "Name: %s %s %n" +
                         "Username: %s %n" +
                         "UserId: %s %n",
