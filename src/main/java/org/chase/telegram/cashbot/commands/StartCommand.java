@@ -1,7 +1,5 @@
 package org.chase.telegram.cashbot.commands;
 
-import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
 import org.springframework.stereotype.Component;
@@ -30,11 +28,11 @@ public class StartCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            startCommandGroup.verify(user, chat, arguments, verifierService);
+            startCommandGroup.verify(user, chat, arguments, verifierService, absSender);
         } else if (chat.isUserChat()) {
-            startCommandUser.verify(user, chat, arguments, verifierService);
+            startCommandUser.verify(user, chat, arguments, verifierService, absSender);
         }
         throw new VerificationException("This bot can only be used in Private or Group chats");
     }

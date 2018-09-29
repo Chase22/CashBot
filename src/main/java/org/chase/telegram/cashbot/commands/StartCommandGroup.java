@@ -3,7 +3,6 @@ package org.chase.telegram.cashbot.commands;
 import lombok.extern.slf4j.Slf4j;
 import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.bot.CashBot;
@@ -23,19 +22,17 @@ import static java.util.Objects.requireNonNull;
 public class StartCommandGroup extends CashCommand {
 
 	private final CashChatService cashChatService;
-    private final CashBot cashBot;
 
-    public StartCommandGroup(CashChatService cashChatService, final VerifierService verifierService, final CashBot cashBot) {
+    public StartCommandGroup(CashChatService cashChatService, final VerifierService verifierService) {
 		super(null, null, null, verifierService);
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-        this.cashBot = requireNonNull(cashBot, "cashBot");
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         cashChatService.getById(chat.getId()).ifPresent((cashChat) -> new VerificationException("Bot is already running"));
         try {
-            if (!GroupUtils.isAdministrator(cashBot,chat, user)) {
+            if (!GroupUtils.isAdministrator(absSender ,chat, user)) {
                 throw new VerificationException("This command can only be executed by Admins");
             }
         } catch (TelegramApiException e) {

@@ -3,7 +3,6 @@ package org.chase.telegram.cashbot.Account.commands;
 import org.chase.telegram.cashbot.Account.Account;
 import org.chase.telegram.cashbot.Account.AccountService;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.ChatNotRegisteredException;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
@@ -34,7 +33,7 @@ public class OpenAccount extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
         if (accountService.getAccount(user.getId(), chat.getId()).isPresent()) {
             throw new VerificationException("User has already an account");

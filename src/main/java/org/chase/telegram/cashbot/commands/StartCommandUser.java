@@ -1,13 +1,10 @@
 package org.chase.telegram.cashbot.commands;
 
-import com.google.common.base.VerifyException;
-import org.chase.telegram.cashbot.CashChat.CashChat;
 import org.chase.telegram.cashbot.CashChat.CashChatService;
 import org.chase.telegram.cashbot.CashUser.CashUser;
 import org.chase.telegram.cashbot.CashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
-import org.chase.telegram.cashbot.bot.GroupUtils;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -29,7 +26,7 @@ public class StartCommandUser extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         cashUserService.getById(user.getId()).ifPresent((cashUser) -> new VerificationException("Bot is already running"));
     }
 

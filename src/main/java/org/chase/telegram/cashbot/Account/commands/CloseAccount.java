@@ -6,7 +6,6 @@ import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.VerifierService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
-import org.chase.telegram.cashbot.flags.FlagService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -36,7 +35,7 @@ public class CloseAccount extends CashCommand {
 
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         cashChatService.getById(chat.getId()).orElseThrow(() -> new VerificationException("The bot is not started"));
         cashUserService.getById(user.getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
         accountService.getAccount(user.getId(), chat.getId()).orElseThrow(() -> new VerificationException("No Account found"));

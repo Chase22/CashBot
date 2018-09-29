@@ -28,7 +28,7 @@ public class ShowMe extends CashCommand {
     }
 
     @Override
-    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService) throws VerificationException {
+    protected void verify(final User user, final Chat chat, final String[] arguments, final VerifierService verifierService, final AbsSender absSender) throws VerificationException {
         cashUserService.getById(user.getId()).orElseThrow(() -> {
             return new VerificationException("You are not registered with the bot");
         });

@@ -26,7 +26,7 @@ public abstract class CashCommand extends ManCommand {
     public final void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
         try {
             try {
-                verify(user, chat, arguments, verifierService);
+                verify(user, chat, arguments, verifierService, absSender);
                 executeCommand(absSender, user, chat, arguments).ifPresent(cashBotReply -> {
                     try {
                         cashBotReply.sendMessage(absSender);
@@ -42,7 +42,7 @@ public abstract class CashCommand extends ManCommand {
         }
     }
 
-    protected abstract void verify(User user, Chat chat, String[] arguments, VerifierService verifierService) throws VerificationException;
+    protected abstract void verify(User user, Chat chat, String[] arguments, VerifierService verifierService, final AbsSender absSender) throws VerificationException;
 
     protected abstract Optional<CashBotReply> executeCommand(AbsSender absSender, User user, Chat chat, String[] arguments) throws TelegramApiException;
 }
