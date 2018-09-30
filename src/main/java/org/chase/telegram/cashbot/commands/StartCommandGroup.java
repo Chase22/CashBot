@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 @Slf4j
-@EnableCommand
+@DisableCommand
 public class StartCommandGroup extends CashCommand {
 
 	private final CashChatService cashChatService;

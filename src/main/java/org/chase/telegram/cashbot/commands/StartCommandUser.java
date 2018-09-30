@@ -16,7 +16,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @Component
-@EnableCommand
+@DisableCommand
 public class StartCommandUser extends CashCommand {
 
     private final CashUserService cashUserService;

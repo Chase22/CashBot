@@ -12,7 +12,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @Component
-@DisableCommand
+@EnableCommand
 public class StartCommand extends CashCommand {
 	private static final String IDENTIFIER = "start";
 	private static final String DESCRIPTION = "";
