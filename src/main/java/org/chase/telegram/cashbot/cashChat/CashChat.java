@@ -28,4 +28,18 @@ public class CashChat {
         amountVoice = cashChatEntity.getAmountVoice();
         amountOther = cashChatEntity.getAmountOther();
     }
+
+    public CashChatEntity toEntity() {
+        return new CashChatEntity(
+                chatId,
+                title,
+                startAmount,
+                amountText,
+                amountPic,
+                amountVoice,
+                amountSticker,
+                amountOther,
+                currencyName
+        );
+    }
 }

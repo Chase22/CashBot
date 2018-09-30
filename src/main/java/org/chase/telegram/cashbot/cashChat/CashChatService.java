@@ -34,4 +34,8 @@ public class CashChatService {
     public Optional<CashChat> getById(long chatId) {
         return cashChatRepository.findByChatId(chatId).map(CashChat::new);
     }
+
+    public CashChatEntity save(final CashChat cashChat) {
+        return cashChatRepository.save(cashChat.toEntity());
+    }
 }
