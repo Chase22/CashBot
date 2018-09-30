@@ -89,6 +89,13 @@
             <artifactId>telegrambotsextensions</artifactId>
             <version>4.1</version>
         </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
