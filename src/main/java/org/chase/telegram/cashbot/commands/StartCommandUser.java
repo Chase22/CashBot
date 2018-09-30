@@ -1,9 +1,9 @@
 package org.chase.telegram.cashbot.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -16,6 +16,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @Component
+@EnableCommand
 public class StartCommandUser extends CashCommand {
 
     private final CashUserService cashUserService;

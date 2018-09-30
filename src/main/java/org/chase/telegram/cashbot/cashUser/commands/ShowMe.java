@@ -1,10 +1,11 @@
 package org.chase.telegram.cashbot.cashUser.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -13,6 +14,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.Optional;
 
 @Component
+@EnableCommand
 public class ShowMe extends CashCommand {
     private static final String IDENTIFIER = "showMe";
     private static final String DESCRIPTION = "";

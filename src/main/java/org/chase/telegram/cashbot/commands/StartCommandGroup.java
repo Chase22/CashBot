@@ -1,10 +1,10 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.cashChat.CashChat;
-import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.bot.GroupUtils;
+import org.chase.telegram.cashbot.cashChat.CashChat;
+import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -17,6 +17,7 @@ import static java.util.Objects.requireNonNull;
 
 @Component
 @Slf4j
+@EnableCommand
 public class StartCommandGroup extends CashCommand {
 
 	private final CashChatService cashChatService;

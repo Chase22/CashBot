@@ -1,12 +1,13 @@
 package org.chase.telegram.cashbot.account.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -19,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 
 //TODO Split into User and Group Subclasses
 @Component
+@EnableCommand
 public class ShowAccounts extends CashCommand {
     private static final String IDENTIFIER = "showAccounts";
     private static final String DESCRIPTION = "";

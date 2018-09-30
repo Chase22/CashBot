@@ -1,10 +1,10 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.changelog.Changelog;
 import org.chase.telegram.cashbot.changelog.ChangelogService;
 import org.chase.telegram.cashbot.changelog.FormatException;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.changelog.Version;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -20,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 
 @Slf4j
 @Component
+@EnableCommand
 public class ChangelogCommand extends CashCommand {
     private static final String IDENTIFIER = "changelog";
     private static final String DESCRIPTION = "gets the changelog for the bot";

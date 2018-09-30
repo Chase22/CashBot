@@ -1,11 +1,12 @@
 package org.chase.telegram.cashbot.account.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
+import org.chase.telegram.cashbot.commands.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -17,8 +18,9 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @Component
+@EnableCommand
 public class TransferAmount extends AccountCashCommand {
-    private static final String IDENTIFIER = "transfer";
+    private static final String IDENTIFIER = "transferto";
     private static final String DESCRIPTION = "";
     private static final String EXTENDED_DESCRIPTION = "";
 

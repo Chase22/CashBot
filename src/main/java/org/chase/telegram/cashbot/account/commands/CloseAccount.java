@@ -1,10 +1,11 @@
 package org.chase.telegram.cashbot.account.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @Component
+@EnableCommand
 public class CloseAccount extends CashCommand {
     private static final String IDENTIFIER = "closeAccount";
     private static final String DESCRIPTION = "";
