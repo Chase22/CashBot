@@ -1,21 +1,13 @@
 package org.chase.telegram.cashbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.Account.AccountService;
-import org.chase.telegram.cashbot.Account.commands.CloseAccount;
-import org.chase.telegram.cashbot.flags.Flag;
-import org.chase.telegram.cashbot.flags.FlagService;
+import org.chase.telegram.cashbot.account.AccountService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 

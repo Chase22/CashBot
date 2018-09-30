@@ -1,11 +1,11 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.Changelog.Changelog;
-import org.chase.telegram.cashbot.Changelog.ChangelogService;
-import org.chase.telegram.cashbot.Changelog.FormatException;
+import org.chase.telegram.cashbot.changelog.Changelog;
+import org.chase.telegram.cashbot.changelog.ChangelogService;
+import org.chase.telegram.cashbot.changelog.FormatException;
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.Changelog.Version;
+import org.chase.telegram.cashbot.changelog.Version;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 public class ChangelogCommand extends CashCommand {
     private static final String IDENTIFIER = "changelog";
     private static final String DESCRIPTION = "gets the changelog for the bot";
-    private static final String EXTENDED_DESCRIPTION = "Displays the latest Changelog.\n use /changelog [VersionNumber] to get a certain version or /changelog all to get all changelogs";
+    private static final String EXTENDED_DESCRIPTION = "Displays the latest changelog.\n use /changelog [VersionNumber] to get a certain version or /changelog all to get all changelogs";
 
     private final ChangelogService changelogService;
 

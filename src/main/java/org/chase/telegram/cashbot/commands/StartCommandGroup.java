@@ -1,8 +1,8 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.CashChat.CashChat;
-import org.chase.telegram.cashbot.CashChat.CashChatService;
+import org.chase.telegram.cashbot.cashChat.CashChat;
+import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.bot.GroupUtils;
 import org.springframework.stereotype.Component;

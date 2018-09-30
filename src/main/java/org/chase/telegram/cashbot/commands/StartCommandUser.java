@@ -1,8 +1,8 @@
 package org.chase.telegram.cashbot.commands;
 
-import org.chase.telegram.cashbot.CashChat.CashChatService;
-import org.chase.telegram.cashbot.CashUser.CashUser;
-import org.chase.telegram.cashbot.CashUser.CashUserService;
+import org.chase.telegram.cashbot.cashChat.CashChatService;
+import org.chase.telegram.cashbot.cashUser.CashUser;
+import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.VerificationException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;

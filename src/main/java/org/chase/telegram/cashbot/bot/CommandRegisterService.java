@@ -1,10 +1,10 @@
 package org.chase.telegram.cashbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.Account.commands.CloseAccount;
-import org.chase.telegram.cashbot.Account.commands.OpenAccount;
-import org.chase.telegram.cashbot.Account.commands.ShowAccounts;
-import org.chase.telegram.cashbot.CashUser.commands.ShowMe;
+import org.chase.telegram.cashbot.account.commands.CloseAccount;
+import org.chase.telegram.cashbot.account.commands.OpenAccount;
+import org.chase.telegram.cashbot.account.commands.ShowAccounts;
+import org.chase.telegram.cashbot.cashUser.commands.ShowMe;
 import org.chase.telegram.cashbot.commands.ChangelogCommand;
 import org.chase.telegram.cashbot.commands.StartCommand;
 import org.springframework.stereotype.Service;
