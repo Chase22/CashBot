@@ -27,6 +27,9 @@ public class ShowMe extends CashCommand {
 
     @Override
     protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+        if (!message.getChat().isUserChat()) {
+            throw new VerificationException("This command can only be executed in private chats");
+        }
         cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
     }
 
