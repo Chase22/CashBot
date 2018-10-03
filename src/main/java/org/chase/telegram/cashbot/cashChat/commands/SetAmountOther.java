@@ -1,6 +1,7 @@
 package org.chase.telegram.cashbot.cashChat.commands;
 
 import org.chase.telegram.cashbot.VerificationException;
+import org.chase.telegram.cashbot.bot.TelegramUserRightService;
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
@@ -22,8 +23,8 @@ public class SetAmountOther extends ConfigCommand {
 
     private final CashChatService cashChatService;
 
-    public SetAmountOther(final CashChatService cashChatService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService);
+    public SetAmountOther(final CashChatService cashChatService, final TelegramUserRightService telegramUserRightService) {
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService, telegramUserRightService);
 
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
     }

@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.bot;
 
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -11,12 +12,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GroupUtils {
+@Component
+public class TelegramUserRightService {
 	public enum GroupRight {
 		CHANGE_INFORMATION, DELETE_MESSAGES, EDIT_MESSAGES, INVITE_USERS, PIN_MESSAGES, POST_MESSAGES, PROMOTE_MEMBERS, RESTRICT_USERS, SEND_MEDIA_MESSAGES, SEND_MESSAGES, SEND_OTHER_MESSAGES
 	}
 
-	public static boolean isAdministrator(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
+	public boolean isAdministrator(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
 		ArrayList<ChatMember> admins = getAdmins(absSender, chat);
 		long id = getChatMember(absSender, chat, user).getUser().getId();
 		for (ChatMember admin : admins) {
@@ -25,7 +27,7 @@ public class GroupUtils {
 		return false;
 	}
 
-	public static ChatMember getChatMember(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
+	public ChatMember getChatMember(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
 		GetChatMember gcm = new GetChatMember();
 		gcm.setChatId(chat.getId());
 		gcm.setUserId(user.getId());
@@ -38,7 +40,7 @@ public class GroupUtils {
 		return absSender.execute(gca);
 	}
 
-	public static boolean hasRight(AbsSender absSender, Chat chat, User user, GroupRight rights)
+	public boolean hasRight(AbsSender absSender, Chat chat, User user, GroupRight rights)
 			throws TelegramApiException {
 		ChatMember member = getChatMember(absSender, chat, user);
 

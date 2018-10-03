@@ -4,7 +4,7 @@ import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountService;
-import org.chase.telegram.cashbot.bot.GroupUtils;
+import org.chase.telegram.cashbot.bot.TelegramUserRightService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.EnableCommand;
@@ -27,18 +27,21 @@ public class SetAmount extends AccountCashCommand {
 
     private final AccountService accountService;
     private final CashUserService cashUserService;
+    private final TelegramUserRightService telegramUserRightService;
 
-    public SetAmount(final AccountService accountService, final CashUserService cashUserService) {
+    public SetAmount(final AccountService accountService, final CashUserService cashUserService,
+                     final TelegramUserRightService telegramUserRightService) {
         super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, accountService);
 
         this.accountService = requireNonNull(accountService, "accountService");
         this.cashUserService = requireNonNull(cashUserService, "cashUserService");
+        this.telegramUserRightService = requireNonNull(telegramUserRightService, "telegramUserRightService");
     }
 
     @Override
     protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
         try {
-            if (!GroupUtils.isAdministrator(absSender, message.getChat(), message.getFrom())) {
+            if (!telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
                 throw new VerificationException("This command can only be used by admins");
             }
         } catch (TelegramApiException e) {
