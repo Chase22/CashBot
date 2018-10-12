@@ -35,8 +35,8 @@ public class TransferAmount extends AccountCashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        super.verify(message, arguments, absSender);
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
+        super.verify(absSender, message, arguments);
     }
 
     @Override

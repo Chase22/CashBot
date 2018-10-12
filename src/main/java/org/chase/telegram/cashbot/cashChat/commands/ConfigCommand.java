@@ -23,7 +23,7 @@ public abstract class ConfigCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
         if (!message.getChat().isSuperGroupChat() && message.getChat().isGroupChat()) {
             throw new VerificationException("This command can only be used in groups");
         }

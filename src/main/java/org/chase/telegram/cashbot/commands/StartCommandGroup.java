@@ -31,8 +31,10 @@ public class StartCommandGroup extends CashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
-        cashChatService.getById(message.getChat().getId()).ifPresent((cashChat) -> new VerificationException("Bot is already running"));
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
+        if (cashChatService.getById(message.getChatId()).isPresent()) {
+            throw new VerificationException("Bot is already running");
+        }
         try {
             if (!telegramUserRightService.isAdministrator(absSender , message.getChat(), message.getFrom())) {
                 throw new VerificationException("This command can only be executed by Admins");
@@ -43,7 +45,7 @@ public class StartCommandGroup extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException{
+    protected Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) {
         final Chat chat = message.getChat();
 
         CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());

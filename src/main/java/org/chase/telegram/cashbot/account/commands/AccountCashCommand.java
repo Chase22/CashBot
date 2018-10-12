@@ -1,11 +1,11 @@
 package org.chase.telegram.cashbot.account.commands;
 
+import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -23,7 +23,7 @@ public abstract class AccountCashCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
         if (!message.getChat().isSuperGroupChat() && message.getChat().isGroupChat()) {
             throw new VerificationException("This command can only be used in groups");
         }

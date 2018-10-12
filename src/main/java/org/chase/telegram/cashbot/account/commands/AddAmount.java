@@ -39,7 +39,7 @@ public class AddAmount extends AccountCashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
         try {
             if (!telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
                 throw new VerificationException("This command can only be used by admins");
@@ -48,7 +48,7 @@ public class AddAmount extends AccountCashCommand {
             throw new VerificationException("Error verifying GroupAdmins");
         }
 
-        super.verify(message, arguments, absSender);
+        super.verify(absSender, message, arguments);
     }
 
     @Override

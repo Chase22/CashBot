@@ -38,7 +38,7 @@ public class ShowAccounts extends CashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
         if(message.getChat().isUserChat()) {
             cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
         } else if (message.getChat().isGroupChat()) {

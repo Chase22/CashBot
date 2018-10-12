@@ -33,7 +33,7 @@ public class OpenAccount extends CashCommand {
     }
 
     @Override
-    protected void verify(final Message message, final String[] arguments, final AbsSender absSender) throws VerificationException {
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
         cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not started"));
         if (accountService.getAccount(message.getFrom().getId(), message.getChatId()).isPresent()) {
             throw new VerificationException("User has already an account");
