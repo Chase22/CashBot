@@ -28,7 +28,9 @@ public class StartCommandUser extends CashCommand {
 
     @Override
     protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        cashUserService.getById(message.getFrom().getId()).ifPresent((cashUser) -> new VerificationException("Bot is already running"));
+        if (cashUserService.getById(message.getFrom().getId()).isPresent()) {
+            throw new VerificationException("Bot is already running");
+        }
     }
 
     @Override
