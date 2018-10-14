@@ -1,9 +1,9 @@
 package org.chase.telegram.cashbot.changelog
 
-import spock.lang.Specification
+import org.chase.telegram.cashbot.AbstractSpecification
 import spock.lang.Unroll
 
-class VersionClassSpec extends Specification {
+class VersionClassSpec extends AbstractSpecification {
 
     @Unroll
     def "the fromString method should return a correct Version object for #input"() {
