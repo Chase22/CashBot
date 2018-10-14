@@ -24,7 +24,7 @@ public abstract class AccountCashCommand extends CashCommand {
 
     @Override
     protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        if (!message.getChat().isSuperGroupChat() && message.getChat().isGroupChat()) {
+        if (!message.getChat().isSuperGroupChat() && !message.getChat().isGroupChat()) {
             throw new VerificationException("This command can only be used in groups");
         }
 
