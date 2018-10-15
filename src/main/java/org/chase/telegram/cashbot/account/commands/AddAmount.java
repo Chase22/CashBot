@@ -58,6 +58,7 @@ public class AddAmount extends AccountCashCommand {
         try {
             final Account account = getAccountFromMessage(accountService, cashUserService, message, arguments);
             account.addToBalance(Integer.parseInt(arguments[arguments.length-1]));
+            accountService.saveAccount(account);
             return Optional.of(new CashBotReply(chat.getId(), "New Balance: %s", account.getBalance()));
         } catch (AccountException | UserNotFoundException e) {
             return Optional.of(new CashBotReply(chat.getId(), e.getMessage()));

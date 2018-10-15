@@ -1,10 +1,10 @@
 package org.chase.telegram.cashbot.account;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.cashChat.CashChat;
-import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.ChatNotRegisteredException;
 import org.chase.telegram.cashbot.GroupUserIdentifier;
+import org.chase.telegram.cashbot.cashChat.CashChat;
+import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -96,5 +96,9 @@ public class AccountService {
 
     public void deleteAccount(final Account account) {
         accountRepository.delete(account.toEntity());
+    }
+
+    public void saveAccount(final Account account) {
+        accountRepository.save(account.toEntity());
     }
 }
