@@ -17,7 +17,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 @EnableCommand
 public class SetAmountOther extends ConfigCommand {
-    private static final String IDENTIFIER = "setAmountText";
+    private static final String IDENTIFIER = "setAmountOther";
     private static final String DESCRIPTION = "Sets the Amount given for a not otherwise mapped message type";
     private static final String EXTENDED_DESCRIPTION = String.format("%s. Use /%s [Amount]", DESCRIPTION, IDENTIFIER);
 
