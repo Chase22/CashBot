@@ -13,8 +13,8 @@ import java.util.Optional;
 
 @EnableCommand
 public class ShowConfig extends ConfigCommand {
-    private static final String IDENTIFIER = "setCurrencyName";
-    private static final String DESCRIPTION = "Sets the Currency Name";
+    private static final String IDENTIFIER = "showConfig";
+    private static final String DESCRIPTION = "Shows the current Config";
     private static final String EXTENDED_DESCRIPTION = String.format("Shows the current Config for the group");
     private final CashChatService cashChatService;
 

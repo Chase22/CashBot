@@ -2,11 +2,11 @@ package org.chase.telegram.cashbot.cashChat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Data
 @AllArgsConstructor
 public class CashChat {
-
 
     private long chatId;
     private String title;
@@ -42,5 +42,20 @@ public class CashChat {
                 amountOther,
                 currencyName
         );
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("chatId", chatId)
+                .append("title", title)
+                .append("startAmount", startAmount)
+                .append("amountText", amountText)
+                .append("amountPic", amountPic)
+                .append("amountVoice", amountVoice)
+                .append("amountSticker", amountSticker)
+                .append("amountOther", amountOther)
+                .append("currencyName", currencyName)
+                .toString();
     }
 }
