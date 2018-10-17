@@ -40,6 +40,11 @@ public class TransferAmount extends AccountCashCommand {
     }
 
     @Override
+    int getExtraArgumentCount() {
+        return 2;
+    }
+
+    @Override
     protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
         final User fromUser = message.getFrom();

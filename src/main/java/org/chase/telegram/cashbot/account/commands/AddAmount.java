@@ -52,6 +52,11 @@ public class AddAmount extends AccountCashCommand {
     }
 
     @Override
+    int getExtraArgumentCount() {
+        return 1;
+    }
+
+    @Override
     protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
 

@@ -35,8 +35,8 @@ public abstract class AccountCashCommand extends CashCommand {
                     .orElseThrow(() -> new VerificationException(
                             String.format("User %s %s does not have an account", replyToUser.getFirstName(), replyToUser.getLastName()))
                     );
-        } else if (arguments.length < 2) {
-            throw new VerificationException("Not enough arguments provided. Either add a username or reply to the message of a User you want to transfer money to");
+        } else if (arguments.length < getExtraArgumentCount()+1) {
+            throw new VerificationException("Not enough arguments provided. Either add a username or reply to the message of a User");
         } else {
             try {
                 Integer.parseInt(arguments[arguments.length-1]);
@@ -46,7 +46,7 @@ public abstract class AccountCashCommand extends CashCommand {
         }
     }
 
-    protected Account getAccountFromMessage(AccountService accountService, CashUserService cashUserService, Message message, String... arguments) throws AccountException, UserNotFoundException {
+    Account getAccountFromMessage(AccountService accountService, CashUserService cashUserService, Message message, String... arguments) throws AccountException, UserNotFoundException {
         Account account;
         final Chat chat = message.getChat();
 
@@ -70,4 +70,7 @@ public abstract class AccountCashCommand extends CashCommand {
 
         return account;
     }
+
+    abstract int getExtraArgumentCount();
+
 }
