@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Data
 @AllArgsConstructor
 public class AccountEntity {
+
     @EmbeddedId
     GroupUserIdentifier groupUserIdentifier;
 

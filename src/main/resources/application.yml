@@ -7,3 +7,7 @@ server:
 
 changelog:
   path: /changelog/cashbot.xml
+
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
