@@ -21,7 +21,7 @@ import static java.util.Objects.requireNonNull;
 @Component
 @EnableCommand
 public class SetAmount extends AccountCashCommand {
-    private static final String IDENTIFIER = "set";
+    private static final String IDENTIFIER = "setAmount";
     private static final String DESCRIPTION = "";
     private static final String EXTENDED_DESCRIPTION = "";
 
