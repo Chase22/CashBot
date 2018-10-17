@@ -27,6 +27,7 @@ public class CashChat {
         amountText = cashChatEntity.getAmountText();
         amountVoice = cashChatEntity.getAmountVoice();
         amountOther = cashChatEntity.getAmountOther();
+        currencyName = cashChatEntity.getCurrencyName();
     }
 
     public CashChatEntity toEntity() {
