@@ -23,4 +23,17 @@ public class CashUser {
     public CashUserEntity toEntity() {
         return new CashUserEntity(userId, chatId, username, firstName, lastName);
     }
+
+    public String getDisplayName() {
+        String name = firstName;
+        if (lastName != null) {
+            name += lastName;
+        }
+
+        if (name == null || name.isEmpty()) {
+            name = username;
+        }
+
+        return name;
+    }
 }

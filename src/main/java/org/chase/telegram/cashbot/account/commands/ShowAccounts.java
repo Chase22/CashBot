@@ -3,7 +3,9 @@ package org.chase.telegram.cashbot.account.commands;
 import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountService;
+import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
+import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
@@ -61,11 +63,13 @@ public class ShowAccounts extends CashCommand {
         replyBuilder.append(String.format("Accounts for Chat %s %n", chat.getTitle()));
         for (Account account : accountService.getAccountsByChatId(chat.getId())) {
             cashUserService.getById(account.getUserId()).ifPresent( cashUser -> {
+                CashChat cashChat = cashChatService.getById(account.getGroupId()).get();
+
                 String accountLine = String.format(
-                        "%s %s: %s %n",
-                        cashUser.getFirstName(),
-                        cashUser.getLastName(),
-                        account.getBalance()
+                        "%s: %s %s %n",
+                        cashUser.getDisplayName(),
+                        account.getBalance(),
+                        cashChat.getCurrencyName()
                 );
 
                 replyBuilder.append(accountLine);
@@ -77,13 +81,16 @@ public class ShowAccounts extends CashCommand {
 
     private Optional<CashBotReply> handleUserChat(final User user) {
         StringBuilder replyBuilder = new StringBuilder();
-        replyBuilder.append(String.format("Accounts for User %s %s %n", user.getFirstName(), user.getLastName()));
+        CashUser cashUser = cashUserService.getById(user.getId()).get();
+
+        replyBuilder.append(String.format("Accounts for User %s %n", cashUser.getDisplayName()));
         for (Account account : accountService.getAccountsByUserId(user.getId())) {
             cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
                 String accountLine = String.format(
-                        "%s: %s %n",
+                        "%s: %s %s %n",
                         cashChat.getTitle(),
-                        account.getBalance()
+                        account.getBalance(),
+                        cashChat.getCurrencyName()
                 );
 
                 replyBuilder.append(accountLine);
