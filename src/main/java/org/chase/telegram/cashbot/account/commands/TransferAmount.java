@@ -41,7 +41,7 @@ public class TransferAmount extends AccountCashCommand {
 
     @Override
     int getExtraArgumentCount() {
-        return 2;
+        return 1;
     }
 
     @Override
