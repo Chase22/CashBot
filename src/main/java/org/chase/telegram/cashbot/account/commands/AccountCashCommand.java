@@ -1,18 +1,11 @@
 package org.chase.telegram.cashbot.account.commands;
 
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.account.Account;
-import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountService;
-import org.chase.telegram.cashbot.cashUser.CashUser;
-import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashCommand;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-
-import java.util.Optional;
 
 public abstract class AccountCashCommand extends CashCommand {
     private AccountService accountService;
@@ -44,31 +37,6 @@ public abstract class AccountCashCommand extends CashCommand {
                 throw new VerificationException("Amount has to be a Number");
             }
         }
-    }
-
-    Account getAccountFromMessage(AccountService accountService, CashUserService cashUserService, Message message, String... arguments) throws AccountException, UserNotFoundException {
-        Account account;
-        final Chat chat = message.getChat();
-
-        if (message.isReply()) {
-            account = accountService.getAccount(message.getReplyToMessage().getFrom().getId(), chat.getId()).get();
-        } else {
-            Optional<CashUser> optionalCashUserTo = cashUserService.getByUsername(arguments[0]);
-
-            if (optionalCashUserTo.isPresent()) {
-                Optional<Account> optionalAccountTo = accountService.getAccount(optionalCashUserTo.get().getUserId(), chat.getId());
-
-                if (optionalAccountTo.isPresent()) {
-                    account = optionalAccountTo.get();
-                } else {
-                    throw new AccountException(String.format("Could not find account for User %s. Does he have an account?", arguments[0]));
-                }
-            } else {
-                throw new UserNotFoundException("Could not find User %s. Is he registered with the bot?", arguments[0]);
-            }
-        }
-
-        return account;
     }
 
     abstract int getExtraArgumentCount();

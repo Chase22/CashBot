@@ -22,6 +22,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <telegrambots.version>4.1</telegrambots.version>
+        <spock.version>1.1-groovy-2.4</spock.version>
     </properties>
 
     <build>
@@ -78,9 +81,9 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>26.0-jre</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -90,12 +93,17 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>4.1</version>
+            <version>${telegrambots.version}</version>
         </dependency>
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambotsextensions</artifactId>
-            <version>4.1</version>
+            <version>${telegrambots.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-chat-session-bot</artifactId>
+            <version>${telegrambots.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -123,13 +131,13 @@
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-spring</artifactId>
-            <version>1.1-groovy-2.4</version>
+            <version>${spock.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>1.1-groovy-2.4</version>
+            <version>${spock.version}</version>
             <scope>test</scope>
         </dependency>
 

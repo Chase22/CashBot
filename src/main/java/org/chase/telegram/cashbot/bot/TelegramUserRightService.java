@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.bot;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatAdministrators;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
@@ -13,18 +14,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Component
+@Slf4j
 public class TelegramUserRightService {
 	public enum GroupRight {
 		CHANGE_INFORMATION, DELETE_MESSAGES, EDIT_MESSAGES, INVITE_USERS, PIN_MESSAGES, POST_MESSAGES, PROMOTE_MEMBERS, RESTRICT_USERS, SEND_MEDIA_MESSAGES, SEND_MESSAGES, SEND_OTHER_MESSAGES
 	}
 
-	public boolean isAdministrator(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
-		ArrayList<ChatMember> admins = getAdmins(absSender, chat);
-		long id = getChatMember(absSender, chat, user).getUser().getId();
-		for (ChatMember admin : admins) {
-			if (admin.getUser().getId() == id) return true;
-		}
-		return false;
+	public boolean isAdministrator(AbsSender absSender, Chat chat, User user) {
+		try {
+            ArrayList<ChatMember> admins = getAdmins(absSender, chat);
+            long id = getChatMember(absSender, chat, user).getUser().getId();
+            return admins.stream().anyMatch(chatMember -> chatMember.getUser().getId() == id);
+
+        } catch (TelegramApiException e) {
+            log.error("Error retrieving adminStatus", e);
+        }
+        return false;
 	}
 
 	public ChatMember getChatMember(AbsSender absSender, Chat chat, User user) throws TelegramApiException {
