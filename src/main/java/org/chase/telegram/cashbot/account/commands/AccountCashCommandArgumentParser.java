@@ -41,7 +41,7 @@ public class AccountCashCommandArgumentParser {
 
         Integer amount;
         try {
-            amount = Integer.parseUnsignedInt(arguments[1]);
+            amount = Integer.parseUnsignedInt(arguments[arguments.length-1]);
         } catch (NumberFormatException e) {
             if (requireAmount) {
                 throw new IllegalArgumentException("Amount is not a positive Number");
@@ -72,7 +72,7 @@ public class AccountCashCommandArgumentParser {
 
         final Integer replyId = message.getReplyToMessage().getFrom().getId();
 
-        CashUser userTo = cashUserService.getById(replyId).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + "not found. Is he registered with the bot?"));
+        CashUser userTo = cashUserService.getById(replyId).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + " not found. Is he registered with the bot?"));
         return accountService.getAccount(userTo.getUserId(), message.getChatId()).orElse(null);
 
     }

@@ -27,8 +27,8 @@ public class CashUserService {
     }
 
     public Optional<CashUser> getByUsername(final String username) {
-        final String usernameSanitized = username.replace("@", "");
+        final String usernameSanitized = username.replace("@", "").toLowerCase();
 
-        return cashUserRepository.findByUsername(usernameSanitized).map(CashUser::new);
+        return cashUserRepository.findByUsernameIgnoreCase(usernameSanitized).map(CashUser::new);
     }
 }

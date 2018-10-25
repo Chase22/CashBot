@@ -8,5 +8,5 @@ public interface CashUserRepository extends JpaRepository<CashUserEntity, Intege
 
     Optional<CashUserEntity> findByUserId(int userId);
 
-    Optional<CashUserEntity> findByUsername(String username);
+    Optional<CashUserEntity> findByUsernameIgnoreCase(String username);
 }
