@@ -43,7 +43,7 @@ public class SetAmountVoice extends ConfigCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
         CashChat cashChat = cashChatService.getById(message.getChatId()).get();
         cashChat.setAmountVoice(Integer.parseInt(arguments[0]));
         cashChatService.save(cashChat);

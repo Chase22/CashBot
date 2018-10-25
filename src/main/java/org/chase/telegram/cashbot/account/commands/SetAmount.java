@@ -36,12 +36,13 @@ public class SetAmount extends CashCommand {
     protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
 
         final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
         final Account account = context.getFromAccount();
         account.setBalance(context.getAmount());
+        accountService.saveAccount(account);
         return Optional.of(new CashBotReply(chat.getId(), "New Balance: %s", account.getBalance()));
     }
 

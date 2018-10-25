@@ -44,7 +44,7 @@ public class OpenAccount extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         Account account = accountService.createNew(message.getFrom().getId(), message.getChat().getId());
         return Optional.of(new CashBotReply(message.getChat().getId(), "New account created. Initial Balance: %s", account.getBalance()));
 

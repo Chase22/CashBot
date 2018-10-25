@@ -5,7 +5,6 @@ import org.chase.telegram.cashbot.commands.CashCommand;
 import org.chase.telegram.cashbot.commands.DisableCommand;
 import org.chase.telegram.cashbot.commands.EnableCommand;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 
 import javax.inject.Inject;
@@ -24,15 +23,15 @@ public class CommandRegisterService {
 
     }
 
-    void registerCommands(TelegramLongPollingCommandBot bot, IBotCommand... aditionalCommands) {
+    void registerCommands(CashBot cashBot, IBotCommand... aditionalCommands) {
         log.info("Registering commands...");
         for(IBotCommand command : aditionalCommands) {
-            register(bot, command);
+            register(cashBot, command);
         }
 
         for (CashCommand cashCommand : cashCommands) {
             if (cashCommand.getClass().isAnnotationPresent(EnableCommand.class)) {
-                register(bot, cashCommand);
+                register(cashBot, cashCommand);
             } else {
                 if (!cashCommand.getClass().isAnnotationPresent(DisableCommand.class)) {
                     log.info("Command \"{}\" not enabled", cashCommand.getClass().getSimpleName());
@@ -43,8 +42,8 @@ public class CommandRegisterService {
         log.info("Finish registering commands");
     }
 
-    private void register(TelegramLongPollingCommandBot bot, final IBotCommand command) {
-        if (bot.register(command)) {
+    private void register(CashBot cashBot, final IBotCommand command) {
+        if (cashBot.register(command)) {
             log.info("Registered command: \"{}\"", command.getCommandIdentifier());
         } else {
             log.error("Error registering command: \"{}\"", command.getCommandIdentifier());

@@ -36,7 +36,7 @@ public class ShowMe extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException {
         CashUser cashUser = cashUserService.getById(message.getFrom().getId()).get();
         return Optional.of(new CashBotReply(message.getChatId(),
                 "Name: %s %s %n" +

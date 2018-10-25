@@ -38,7 +38,7 @@ public class SetCurrencyName extends ConfigCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
         CashChat cashChat = cashChatService.getById(message.getChatId()).get();
         cashChat.setCurrencyName(arguments[0]);
         cashChatService.save(cashChat);

@@ -38,7 +38,7 @@ public class AddAmount extends CashCommand {
 
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
 
         AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);

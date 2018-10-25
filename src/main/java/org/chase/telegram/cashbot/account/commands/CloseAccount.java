@@ -44,7 +44,7 @@ public class CloseAccount extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         Chat chat = message.getChat();
         User user = message.getFrom();
 

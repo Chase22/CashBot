@@ -41,7 +41,7 @@ public class StartCommand extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException{
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException{
         final Chat chat = message.getChat();
 
         if (chat.isGroupChat() || chat.isSuperGroupChat()) {

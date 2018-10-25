@@ -45,7 +45,7 @@ public class StartCommandGroup extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) {
+    public Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) {
         final Chat chat = message.getChat();
 
         CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());

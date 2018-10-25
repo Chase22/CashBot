@@ -40,7 +40,7 @@ public class ChangelogCommand extends CashCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
         try {
             if (arguments.length > 0) {
                 if (Version.Validate(arguments[0])) {

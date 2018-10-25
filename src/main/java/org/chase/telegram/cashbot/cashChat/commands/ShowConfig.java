@@ -27,7 +27,7 @@ public class ShowConfig extends ConfigCommand {
     }
 
     @Override
-    protected Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException {
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException {
         CashChat cashChat = cashChatService.getById(message.getChatId()).get();
 
         return Optional.of(new CashBotReply(message.getChatId(), cashChat.toString()));
