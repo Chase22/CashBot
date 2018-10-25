@@ -1,6 +1,5 @@
 package org.chase.telegram.cashbot.cashChat.commands;
 
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.bot.TelegramUserRightService;
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
@@ -27,19 +26,6 @@ public class SetAmountOther extends ConfigCommand {
         super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService);
 
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-    }
-
-    @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        super.verify(absSender, message, arguments);
-        if (arguments.length < 1) {
-            throw new VerificationException("No Amount was provided");
-        }
-        try {
-            Integer.parseInt(arguments[0]);
-        } catch (NumberFormatException e) {
-            throw new VerificationException("The Amount must be a number");
-        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.bot.TelegramUserRightService;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,33 +33,26 @@ public abstract class CashCommand extends ManCommand {
         Session session = sessionService.getSession(message).orElse(null);
 
         try {
-            try {
-                verify(absSender, message, arguments);
-                if (this.getClass().isAnnotationPresent(AdminCommand.class)) {
-                    if (telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
-                        absSender.execute(
-                                new SendMessage()
-                                .setReplyToMessageId(message.getMessageId())
-                                .setChatId(message.getChatId())
-                                .setText("This command can only be used by admins"));
-                    }
+            if (this.getClass().isAnnotationPresent(AdminCommand.class)) {
+                if (telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
+                    absSender.execute(
+                            new SendMessage()
+                            .setReplyToMessageId(message.getMessageId())
+                            .setChatId(message.getChatId())
+                            .setText("This command can only be used by admins"));
                 }
-                executeCommand(absSender, message, arguments, session).ifPresent(cashBotReply -> {
-                    try {
-                        cashBotReply.sendMessage(absSender, message.getMessageId());
-                    } catch (TelegramApiException e) {
-                        log.error("Couldn't send Error to chat", e);
-                    }
-                });
-            } catch (VerificationException e) {
-                absSender.execute(new SendMessage(message.getChatId(), e.getMessage()).setReplyToMessageId(message.getMessageId()));
             }
+            executeCommand(absSender, message, arguments, session).ifPresent(cashBotReply -> {
+                try {
+                    cashBotReply.sendMessage(absSender, message.getMessageId());
+                } catch (TelegramApiException e) {
+                    log.error("Couldn't send Error to chat", e);
+                }
+            });
         } catch (TelegramApiException e) {
             log.error("Error executing command", e);
         }
     }
-
-    protected abstract void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException;
 
     public abstract Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException;
 

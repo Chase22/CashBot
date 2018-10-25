@@ -1,8 +1,6 @@
 package org.chase.telegram.cashbot.account.commands;
 
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.AccountService;
-import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.chase.telegram.cashbot.commands.EnableCommand;
@@ -24,24 +22,13 @@ public class CloseAccount extends CashCommand {
     private static final String EXTENDED_DESCRIPTION = "";
 
     private final AccountService accountService;
-    private final CashChatService cashChatService;
-    private final CashChatService cashUserService;
 
-    public CloseAccount(final AccountService accountService, final CashChatService cashChatService, final CashChatService cashUserService) {
+    public CloseAccount(final AccountService accountService) {
         super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
 
         this.accountService = requireNonNull(accountService, "accountService");
-        this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-        this.cashUserService = cashUserService;
     }
 
-
-    @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not started"));
-        cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
-        accountService.getAccount(message.getFrom().getId(), message.getChatId()).orElseThrow(() -> new VerificationException("No account found"));
-    }
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {

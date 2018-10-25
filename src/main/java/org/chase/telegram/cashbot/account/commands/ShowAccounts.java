@@ -1,6 +1,5 @@
 package org.chase.telegram.cashbot.account.commands;
 
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashChat.CashChat;
@@ -37,15 +36,6 @@ public class ShowAccounts extends CashCommand {
         this.accountService = requireNonNull(accountService, "accountService");
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
         this.cashUserService = requireNonNull(cashUserService, "cashUserService");
-    }
-
-    @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        if(message.getChat().isUserChat()) {
-            cashUserService.getById(message.getFrom().getId()).orElseThrow(() -> new VerificationException("You are not registered with the bot"));
-        } else if (message.getChat().isGroupChat()) {
-            cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not started"));
-        }
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.chase.telegram.cashbot.cashChat.commands;
 
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.commands.AdminCommand;
@@ -23,11 +22,6 @@ public abstract class ConfigCommand extends CashCommand {
                          final CashChatService cashChatService) {
         super(commandIdentifier, description, extendedDescription);
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-    }
-
-    @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-
     }
 
     @Override

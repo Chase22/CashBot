@@ -34,9 +34,6 @@ public class ChangelogCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
-
-    @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
         try {
             if (arguments.length > 0) {

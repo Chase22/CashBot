@@ -31,9 +31,6 @@ public class SetCurrencyName extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
-
-    @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
         if (!message.getChat().isSuperGroupChat() && !message.getChat().isGroupChat()) {
             return Optional.of(new CashBotReply(message.getChatId(), "This command can only be used in groups"));

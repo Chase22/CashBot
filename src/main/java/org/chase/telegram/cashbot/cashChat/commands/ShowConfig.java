@@ -25,9 +25,6 @@ public class ShowConfig extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
-
-    @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         return cashChatService.getById(message.getChatId())
                 .map(cashChat -> Optional.of(new CashBotReply(message.getChatId(), cashChat.toString())))

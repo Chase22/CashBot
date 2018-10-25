@@ -33,9 +33,6 @@ public class SetAmount extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
-
-    @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         final Chat chat = message.getChat();
 

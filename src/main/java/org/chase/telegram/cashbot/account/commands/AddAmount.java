@@ -33,9 +33,6 @@ public class AddAmount extends CashCommand {
         this.argumentParser = argumentParser;
     }
 
-    @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
-
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
