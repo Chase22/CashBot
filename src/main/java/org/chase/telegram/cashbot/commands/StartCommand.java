@@ -1,6 +1,5 @@
 package org.chase.telegram.cashbot.commands;
 
-import org.chase.telegram.cashbot.VerificationException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -28,17 +27,7 @@ public class StartCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        Chat chat = message.getChat();
-
-        if (chat.isGroupChat() || chat.isSuperGroupChat()) {
-            startCommandGroup.verify(absSender, message, arguments);
-        } else if (chat.isUserChat()) {
-            startCommandUser.verify(absSender, message, arguments);
-        } else {
-            throw new VerificationException("This bot can only be used in Private or Group chats");
-        }
-    }
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) { }
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) throws TelegramApiException{
@@ -49,7 +38,7 @@ public class StartCommand extends CashCommand {
         } else if (chat.isUserChat()) {
             return startCommandUser.executeCommand(absSender, message, arguments);
         }
-        return Optional.empty();
+        return Optional.of(new CashBotReply(message.getChatId(), "This bot can only be used in Private or Group chats"));
     }
 
     @Override
