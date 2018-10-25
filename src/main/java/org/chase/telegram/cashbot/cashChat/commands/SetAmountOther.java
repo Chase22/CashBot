@@ -24,7 +24,7 @@ public class SetAmountOther extends ConfigCommand {
     private final CashChatService cashChatService;
 
     public SetAmountOther(final CashChatService cashChatService, final TelegramUserRightService telegramUserRightService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService, telegramUserRightService);
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService);
 
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
     }

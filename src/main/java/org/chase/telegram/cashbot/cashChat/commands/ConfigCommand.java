@@ -1,40 +1,63 @@
 package org.chase.telegram.cashbot.cashChat.commands;
 
 import org.chase.telegram.cashbot.VerificationException;
-import org.chase.telegram.cashbot.bot.TelegramUserRightService;
+import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
+import org.chase.telegram.cashbot.commands.AdminCommand;
+import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
+@AdminCommand
 public abstract class ConfigCommand extends CashCommand {
 
     private final CashChatService cashChatService;
-    private final TelegramUserRightService telegramUserRightService;
+
 
     public ConfigCommand(final String commandIdentifier, final String description, final String extendedDescription,
-                         final CashChatService cashChatService, final TelegramUserRightService telegramUserRightService) {
+                         final CashChatService cashChatService) {
         super(commandIdentifier, description, extendedDescription);
         this.cashChatService = requireNonNull(cashChatService, "cashChatService");
-        this.telegramUserRightService = requireNonNull(telegramUserRightService, "telegramUserRightService");
     }
 
     @Override
     protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-        if (!message.getChat().isSuperGroupChat() && !message.getChat().isGroupChat()) {
-            throw new VerificationException("This command can only be used in groups");
-        }
-        cashChatService.getById(message.getChatId()).orElseThrow(() -> new VerificationException("The bot is not running for this chat"));
-        try {
-            if (!telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
-                throw new VerificationException("This command can only be used by admins");
-            }
-        } catch (TelegramApiException e) {
-            throw new VerificationException("Error verifying groupadmins");
-        }
+
     }
 
+    @Override
+    public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
+        if (!message.getChat().isSuperGroupChat() && !message.getChat().isGroupChat()) {
+            return Optional.of(new CashBotReply(message.getChatId(), "This command can only be used in groups"));
+        }
+
+        CashChat chat;
+        Integer amount;
+
+        final Optional<CashChat> cashChatOptional = cashChatService.getById(message.getChatId());
+
+        if (cashChatOptional.isPresent()) {
+            chat = cashChatOptional.get();
+        } else {
+            return Optional.of(new CashBotReply(message.getChatId(), "The bot is not running for this chat"));
+        }
+
+        if (arguments.length < 1) {
+            return Optional.of(new CashBotReply(message.getChatId(), "No Amount was provided"));
+        }
+        try {
+            amount = Integer.parseInt(arguments[0]);
+        } catch (NumberFormatException e) {
+            return Optional.of(new CashBotReply(message.getChatId(), "The Amount must be a number"));
+        }
+
+        return setValue(chat, amount);
+    }
+
+    protected abstract Optional<CashBotReply> setValue(CashChat cashChat, Integer amount);
 }

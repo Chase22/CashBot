@@ -21,7 +21,7 @@ public class ShowConfig extends ConfigCommand {
     private final CashChatService cashChatService;
 
     public ShowConfig(final CashChatService cashChatService, final TelegramUserRightService telegramUserRightService) {
-        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService, telegramUserRightService);
+        super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION, cashChatService);
 
         this.cashChatService = cashChatService;
     }
