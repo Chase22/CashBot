@@ -25,7 +25,7 @@ class StartCommandGroupTest extends AbstractSpecification {
     def "setup"() {
         telegramUserRightService.isAdministrator(_) >> false
 
-        commandGroup = new StartCommandGroup(cashChatService, telegramUserRightService)
+        commandGroup = new StartCommandGroup(cashChatService)
     }
 
     def "calling verify with a user that isn't an admin should throw an exception"() {

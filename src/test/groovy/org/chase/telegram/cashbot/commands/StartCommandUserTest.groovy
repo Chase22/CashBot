@@ -23,7 +23,7 @@ class StartCommandUserTest extends AbstractSpecification {
 
 
     def "setup"() {
-        commandUser = new StartCommandUser(cashChatService, cashUserService)
+        commandUser = new StartCommandUser(cashUserService)
     }
 
     def "calling verify with a user that is already registered should throw an exception"() {

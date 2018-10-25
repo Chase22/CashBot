@@ -1,7 +1,6 @@
 package org.chase.telegram.cashbot.commands;
 
 import lombok.extern.slf4j.Slf4j;
-import org.chase.telegram.cashbot.VerificationException;
 import org.chase.telegram.cashbot.changelog.Changelog;
 import org.chase.telegram.cashbot.changelog.ChangelogService;
 import org.chase.telegram.cashbot.changelog.FormatException;
@@ -35,9 +34,7 @@ public class ChangelogCommand extends CashCommand {
     }
 
     @Override
-    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) throws VerificationException {
-
-    }
+    protected void verify(final AbsSender absSender, final Message message, final String[] arguments) {}
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, Message message, final String[] arguments) {
