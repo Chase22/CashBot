@@ -19,8 +19,8 @@ import java.util.Optional;
 @EnableCommand
 public class SetAmount extends CashCommand {
     private static final String IDENTIFIER = "set";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "sets the accounts balance";
+    private static final String EXTENDED_DESCRIPTION = "Sets the balance of the account provided by parameter or by reply. User /add [username] [amount]";
 
     private final AccountService accountService;
     private final AccountCashCommandArgumentParser argumentParser;

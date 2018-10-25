@@ -19,8 +19,8 @@ import java.util.Optional;
 @EnableCommand
 public class AddAmount extends CashCommand {
     private static final String IDENTIFIER = "add";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "Add an amount to the account";
+    private static final String EXTENDED_DESCRIPTION = "Add an amount to the account provided by parameter or by reply. User /add [username] [amount]";
 
     private final AccountService accountService;
     private final AccountCashCommandArgumentParser argumentParser;
