@@ -38,14 +38,14 @@ public class SetAmount extends CashCommand {
 
         try {
             final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
-            final Account account = context.getFromAccount();
+            final Account account = context.getToAccount();
             account.setBalance(context.getAmount());
             accountService.saveAccount(account);
             return Optional.of(new CashBotReply(chat.getId(), "New Balance: %s", account.getBalance()));
         } catch (IllegalArgumentException e) {
             return Optional.of(new CashBotReply(message.getChatId(), e.getMessage()));
         }
-        
+
     }
 
 }
