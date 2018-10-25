@@ -50,4 +50,12 @@ public class SetAmountOther extends ConfigCommand {
 
         return Optional.of(new CashBotReply(message.getChatId(), "Amount set to %s", cashChat.getAmountOther()));
     }
+
+    @Override
+    protected Optional<CashBotReply> setValue(final CashChat cashChat, final Integer amount) {
+        cashChat.setAmountOther(amount);
+        cashChatService.save(cashChat);
+
+        return Optional.of(new CashBotReply(cashChat.getChatId(), "Amount set to %s", cashChat.getAmountOther()));
+    }
 }
