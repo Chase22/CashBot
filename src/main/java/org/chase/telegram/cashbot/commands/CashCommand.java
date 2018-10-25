@@ -34,7 +34,7 @@ public abstract class CashCommand extends ManCommand {
 
         try {
             if (this.getClass().isAnnotationPresent(AdminCommand.class)) {
-                if (telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
+                if (!telegramUserRightService.isAdministrator(absSender, message.getChat(), message.getFrom())) {
                     absSender.execute(
                             new SendMessage()
                             .setReplyToMessageId(message.getMessageId())
