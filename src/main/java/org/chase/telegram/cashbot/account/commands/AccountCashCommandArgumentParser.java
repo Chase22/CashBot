@@ -58,6 +58,9 @@ public class AccountCashCommandArgumentParser {
     }
 
     private Account parseAccountFromArguments(Message message, String... arguments) {
+        if (arguments.length < 2) {
+            throw new IllegalArgumentException("Not enough Arguments provided");
+        }
         CashUser userTo = cashUserService.getByUsername(arguments[0]).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + "not found. Is he registered with the bot?"));
         return accountService.getAccount(userTo.getUserId(), message.getChatId()).orElse(null);
     }

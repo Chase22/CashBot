@@ -32,19 +32,20 @@ public class TransferAmount extends CashCommand {
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
-        final Chat chat = message.getChat();
-
-        final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
-
-        if (context.getToAccount() == null) {
-            return Optional.of(new CashBotReply(chat.getId(), "Account not found"));
-        }
-
         try {
-        accountService.transferTo(context.getFromAccount(), context.getToAccount(), context.getAmount());
-            return Optional.of(new CashBotReply(chat.getId(), "Transfer complete. New Balance: %s", context.getFromAccount().getBalance()));
-        } catch (AccountException e) {
-            return Optional.of(new CashBotReply(chat.getId(), e.getMessage()));
+            final Chat chat = message.getChat();
+            final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
+            if (context.getToAccount() == null) {
+                return Optional.of(new CashBotReply(chat.getId(), "Account not found"));
+            }
+            try {
+                accountService.transferTo(context.getFromAccount(), context.getToAccount(), context.getAmount());
+                return Optional.of(new CashBotReply(chat.getId(), "Transfer complete. New Balance: %s", context.getFromAccount().getBalance()));
+            } catch (AccountException e) {
+                return Optional.of(new CashBotReply(chat.getId(), e.getMessage()));
+            }
+        } catch (IllegalArgumentException e) {
+            return Optional.of(new CashBotReply(message.getChatId(), e.getMessage()));
         }
 
     }
