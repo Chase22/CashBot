@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.StringJoiner;
+
 @Data
 @AllArgsConstructor
 public class CashChat {
@@ -56,6 +58,18 @@ public class CashChat {
                 .append("amountSticker", amountSticker)
                 .append("amountOther", amountOther)
                 .append("currencyName", currencyName)
+                .toString();
+    }
+
+    public String toChatString() {
+        return new StringJoiner("\n")
+                .add("currencyname: " + currencyName)
+                .add("startamount: " + startAmount)
+                .add("amount text: " + amountText)
+                .add("amount picture: " + amountPic)
+                .add("amount voice: " + amountVoice)
+                .add("amount sticker: " + amountSticker)
+                .add("amount other: " + amountOther)
                 .toString();
     }
 }

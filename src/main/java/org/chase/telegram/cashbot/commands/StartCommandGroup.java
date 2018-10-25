@@ -33,7 +33,7 @@ public class StartCommandGroup extends CashCommand {
             return Optional.of(new CashBotReply(message.getChatId(), "Bot is already running"));
         }
         CashChat cashChat = cashChatService.createDefault(chat.getId(), chat.getTitle());
-        return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat));
+        return Optional.of(new CashBotReply(cashChat.getChatId(), "Bot started %s", cashChat.toChatString()));
     }
 
     @Override

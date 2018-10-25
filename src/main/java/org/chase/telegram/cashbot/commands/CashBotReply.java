@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public
 class CashBotReply{
     private SendMessage reply;
+    private Long originChat;
 
     public CashBotReply(long chatId, String message, Object... args) {
         reply = new SendMessage(chatId, String.format(message, args));
@@ -20,6 +21,12 @@ class CashBotReply{
     }
 
     public void sendMessage(AbsSender sender, final Integer messageId) throws TelegramApiException {
-        sender.execute(reply.setReplyToMessageId(messageId));
+
+        if (originChat != null) {
+            sender.execute(new SendMessage(originChat, "I send it to you in private").setReplyToMessageId(messageId));
+        } else {
+            reply.setReplyToMessageId(messageId);
+        }
+        sender.execute(reply);
     }
 }
