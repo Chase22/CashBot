@@ -17,8 +17,8 @@ import static java.util.Objects.requireNonNull;
 @EnableCommand
 public class OpenAccount extends CashCommand {
     private static final String IDENTIFIER = "openAccount";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "Opens an Account";
+    private static final String EXTENDED_DESCRIPTION = "Opens an account in the group with the standard amount set by the admins";
 
     private final AccountService accountService;
 

@@ -1,6 +1,6 @@
 package org.chase.telegram.cashbot.cashUser.commands;
 
-import org.chase.telegram.cashbot.cashUser.CashUser;
+import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
@@ -13,16 +13,18 @@ import java.util.Optional;
 
 @Component
 @EnableCommand
-public class ShowMe extends CashCommand {
-    private static final String IDENTIFIER = "showMe";
-    private static final String DESCRIPTION = "Shows data saved by the bot about you";
-    private static final String EXTENDED_DESCRIPTION = "Shows data saved by the bot about you";
+public class DeleteMe extends CashCommand {
+    private static final String IDENTIFIER = "deleteMe";
+    private static final String DESCRIPTION = "Deletes all data saved by the bot ";
+    private static final String EXTENDED_DESCRIPTION = DESCRIPTION;
 
     private final CashUserService cashUserService;
+    private final AccountService accountService;
 
-    public ShowMe(final CashUserService cashUserService) {
+    public DeleteMe(final CashUserService cashUserService, final AccountService accountService) {
         super(IDENTIFIER, DESCRIPTION, EXTENDED_DESCRIPTION);
         this.cashUserService = cashUserService;
+        this.accountService = accountService;
     }
 
     @Override
@@ -31,14 +33,12 @@ public class ShowMe extends CashCommand {
             return Optional.of(new CashBotReply(message.getChatId(), "This command can only be executed in private chats"));
         }
 
-        Optional<CashUser> cashUser = cashUserService.getById(message.getFrom().getId());
 
-        return cashUser.map(cashUser1 -> Optional.of(new CashBotReply(message.getChatId(),
-                "Name: %s %s %n" +
-                        "Username: %s %n" +
-                        "UserId: %s %n",
-                cashUser1.getFirstName(), cashUser1.getLastName(), cashUser1.getUsername(), cashUser1.getUserId())))
-                .orElseGet(() -> Optional.of(new CashBotReply(message.getChatId(), "You are not registered with the bot")));
+        return cashUserService.getById(message.getFrom().getId()).map(cashUser -> {
+            accountService.getAccountsByUserId(cashUser.getUserId()).forEach(accountService::deleteAccount);
+            cashUserService.delete(cashUser);
+            return Optional.of(new CashBotReply(message.getChatId(), "You are no longer registered with the bot"));
+        }).orElseGet(() -> Optional.of(new CashBotReply(message.getChatId(), "You are not registered with the bot")));
 
     }
 }

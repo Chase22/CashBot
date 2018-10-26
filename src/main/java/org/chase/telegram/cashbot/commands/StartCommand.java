@@ -14,8 +14,10 @@ import static java.util.Objects.requireNonNull;
 @EnableCommand
 public class StartCommand extends CashCommand {
 	private static final String IDENTIFIER = "start";
-	private static final String DESCRIPTION = "";
-	private static final String EXTENDED_DESCRIPTION = "";
+	private static final String DESCRIPTION = "Starts the bot";
+	private static final String EXTENDED_DESCRIPTION = "Starts the bot in this chat. \n " +
+            "if used in a group chat, it will register the group with the bot and make it available for use. \n " +
+            "if used in a private chat it will register you with the bot, which makes it possible for you to use the bot";
 
     private final StartCommandGroup startCommandGroup;
     private final StartCommandUser startCommandUser;

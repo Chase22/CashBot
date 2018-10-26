@@ -18,8 +18,8 @@ import static java.util.Objects.requireNonNull;
 @EnableCommand
 public class CloseAccount extends CashCommand {
     private static final String IDENTIFIER = "closeAccount";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "Closes your account. The Account will be deleted";
+    private static final String EXTENDED_DESCRIPTION = "Closes your account. The Account will be deleted";
 
     private final AccountService accountService;
 

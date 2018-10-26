@@ -22,8 +22,10 @@ import static java.util.Objects.requireNonNull;
 @EnableCommand
 public class ShowAccounts extends CashCommand {
     private static final String IDENTIFIER = "showAccounts";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "Shows all accounts";
+    private static final String EXTENDED_DESCRIPTION = "Shows all accounts. \n" +
+            "if used in a group chat it will show all accounts available in that chat \n" +
+            "if used in a private chat it will show all accounts you have in different groups";
 
     private final AccountService accountService;
     private final CashChatService cashChatService;

@@ -18,8 +18,9 @@ import java.util.Optional;
 @EnableCommand
 public class TransferAmount extends CashCommand {
     private static final String IDENTIFIER = "transfer";
-    private static final String DESCRIPTION = "";
-    private static final String EXTENDED_DESCRIPTION = "";
+    private static final String DESCRIPTION = "Tranfers an amount to another account";
+    private static final String EXTENDED_DESCRIPTION = "Transfers the amount specified to a user specified either in the command or by replying to him. \n" +
+            "Use /transfer [username] [amount]";
 
     private final AccountService accountService;
     private final AccountCashCommandArgumentParser argumentParser;

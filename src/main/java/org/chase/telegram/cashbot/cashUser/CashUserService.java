@@ -42,4 +42,8 @@ public class CashUserService {
 
         return cashUserRepository.findByUsernameIgnoreCase(usernameSanitized).map(CashUser::new);
     }
+
+    public void delete(final CashUser cashUser) {
+        cashUserRepository.delete(cashUser.toEntity());
+    }
 }
