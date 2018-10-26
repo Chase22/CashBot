@@ -9,5 +9,9 @@ changelog:
   path: /changelog/cashbot.xml
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cashbot
+    username: pguser
+    password: pguser
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
