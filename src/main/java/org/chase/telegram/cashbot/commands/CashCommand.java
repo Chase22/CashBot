@@ -3,6 +3,7 @@ package org.chase.telegram.cashbot.commands;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.bot.TelegramUserRightService;
+import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.ManCommand;
@@ -22,6 +23,9 @@ public abstract class CashCommand extends ManCommand {
     private TelegramUserRightService telegramUserRightService;
 
     @Autowired
+    private  CashUserService cashUserService;
+
+    @Autowired
     private SessionService sessionService;
 
     public CashCommand(String commandIdentifier, String description, String extendedDescription) {
@@ -31,6 +35,7 @@ public abstract class CashCommand extends ManCommand {
     @Override
     public void processMessage(final AbsSender absSender, final Message message, final String[] arguments) {
         Session session = sessionService.getSession(message).orElse(null);
+        cashUserService.getAndUpdateUser(message.getFrom(), message.getChatId());
 
         try {
             if (this.getClass().isAnnotationPresent(AdminCommand.class)) {

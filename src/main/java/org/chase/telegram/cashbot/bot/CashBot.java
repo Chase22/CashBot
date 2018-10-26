@@ -57,6 +57,7 @@ public class CashBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
 
         if (update.hasMessage()) {
+            cashUserService.getAndUpdateUser(update.getMessage().getFrom(), update.getMessage().getChatId());
             Optional<Session> session = sessionService.getSession(update.getMessage());
             if (session.isPresent()) {
                 String activeCommand = (String) session.get().getAttribute("activeCommand");
@@ -86,12 +87,6 @@ public class CashBot extends TelegramLongPollingCommandBot {
                 }
             }
         }
-    }
-
-    @Override
-    protected boolean filter(final Message message) {
-        cashUserService.getAndUpdateUser(message.getFrom(), message.getChatId());
-        return true;
     }
 
     @Override
