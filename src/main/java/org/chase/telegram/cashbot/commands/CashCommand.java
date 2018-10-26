@@ -16,6 +16,9 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Optional;
+import java.util.Set;
+
+import static java.util.Collections.singleton;
 
 @Slf4j
 public abstract class CashCommand extends ManCommand {
@@ -65,9 +68,10 @@ public abstract class CashCommand extends ManCommand {
     }
 
     public abstract Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException;
-    public HelpCategory getCategory() {
-        return HelpCategory.Misc;
-    };
+
+    public Set<HelpCategory> getCategory() {
+        return singleton(HelpCategory.Misc);
+    }
 
     @Override
     public void execute(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) {}

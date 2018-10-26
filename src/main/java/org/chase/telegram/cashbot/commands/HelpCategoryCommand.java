@@ -1,6 +1,8 @@
 package org.chase.telegram.cashbot.commands;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
@@ -17,8 +19,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toSet;
-
 @EnableCommand
 @Component
 @Slf4j
@@ -34,9 +34,21 @@ public class HelpCategoryCommand extends CashCommand {
 
     public HelpCategoryCommand(List<CashCommand> commandList, final CashUserService cashUserService, final SessionService sessionService) {
         super(COMMAND_IDENTIFIER, COMMAND_DESCRIPTION, EXTENDED_DESCRIPTION);
-        commands = commandList.stream().collect(Collectors.groupingBy(CashCommand::getCategory,toSet()));
+        commands = getCommandMap(commandList);
         this.cashUserService = cashUserService;
         this.sessionService = sessionService;
+    }
+
+    private Map<HelpCategory, Set<CashCommand>> getCommandMap(final List<CashCommand> commandList) {
+        Map<HelpCategory, Set<CashCommand>> categorySetMap = Maps.newHashMap();
+        commandList.forEach(cashCommand -> cashCommand.getCategory().forEach(helpCategory -> {
+            if (!categorySetMap.containsKey(helpCategory)) {
+                categorySetMap.put(helpCategory, Sets.newHashSet());
+            }
+            log.info("Add command {} to category {}", cashCommand.getCommandIdentifier(), helpCategory);
+            categorySetMap.get(helpCategory).add(cashCommand);
+        }));
+        return categorySetMap;
     }
 
     @Override

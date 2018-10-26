@@ -4,12 +4,15 @@ import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.HelpCategory;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @EnableCommand
@@ -40,5 +43,10 @@ public class ShowMe extends CashCommand {
                 cashUser1.getFirstName(), cashUser1.getLastName(), cashUser1.getUsername(), cashUser1.getUserId())))
                 .orElseGet(() -> Optional.of(new CashBotReply(message.getChatId(), "You are not registered with the bot")));
 
+    }
+
+    @Override
+    public Set<HelpCategory> getCategory() {
+        return Collections.singleton(HelpCategory.Private);
     }
 }

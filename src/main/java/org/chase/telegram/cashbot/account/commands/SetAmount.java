@@ -3,9 +3,8 @@ package org.chase.telegram.cashbot.account.commands;
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountMessageContext;
 import org.chase.telegram.cashbot.account.AccountService;
-import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
 import org.chase.telegram.cashbot.commands.CashBotReply;
-import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Component
 @AdminCommand
 @EnableCommand
-public class SetAmount extends CashCommand {
+public class SetAmount extends AccountCommand {
     private static final String IDENTIFIER = "set";
     private static final String DESCRIPTION = "sets the accounts balance";
     private static final String EXTENDED_DESCRIPTION = "Sets the balance of the account provided by parameter or by reply. User /add [username] [amount]";

@@ -1,7 +1,9 @@
 package org.chase.telegram.cashbot.commands.start;
 
+import com.google.common.collect.Sets;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.HelpCategory;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -10,6 +12,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
@@ -47,4 +50,9 @@ public class StartCommand extends CashCommand {
 	public String getExtendedDescription() {
 		return EXTENDED_DESCRIPTION;
 	}
+
+    @Override
+    public Set<HelpCategory> getCategory() {
+        return Sets.newHashSet(HelpCategory.Private, HelpCategory.Group);
+    }
 }

@@ -5,7 +5,6 @@ import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
-import org.chase.telegram.cashbot.commands.CashCommand;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -20,7 +19,7 @@ import static java.util.Objects.requireNonNull;
 //TODO Split into User and Group Subclasses
 @Component
 @EnableCommand
-public class ShowAccounts extends CashCommand {
+public class ShowAccounts extends AccountCommand {
     private static final String IDENTIFIER = "showAccounts";
     private static final String DESCRIPTION = "Shows all accounts";
     private static final String EXTENDED_DESCRIPTION = "Shows all accounts. \n" +

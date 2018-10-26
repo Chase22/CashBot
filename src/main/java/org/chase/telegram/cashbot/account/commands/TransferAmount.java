@@ -5,7 +5,6 @@ import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountMessageContext;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
-import org.chase.telegram.cashbot.commands.CashCommand;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 @Component
 @EnableCommand
-public class TransferAmount extends CashCommand {
+public class TransferAmount extends AccountCommand {
     private static final String IDENTIFIER = "transfer";
     private static final String DESCRIPTION = "Tranfers an amount to another account";
     private static final String EXTENDED_DESCRIPTION = "Transfers the amount specified to a user specified either in the command or by replying to him. \n" +
