@@ -3,6 +3,7 @@ package org.chase.telegram.cashbot.bot;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.account.AccountService;
+import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,15 +26,17 @@ public class CashBot extends TelegramLongPollingCommandBot {
     private final String botToken;
     private final AccountService accountService;
     private final SessionService sessionService;
+    private final CashUserService cashUserService;
 
     public CashBot(@Value("${telegram.bot.name}") final String bot_username,
                    @Value("${BOT_TOKEN}") final String bot_token,
                    final CommandRegisterService commandRegisterService,
-                   final AccountService accountService, final SessionService sessionService) {
+                   final AccountService accountService, final SessionService sessionService, final CashUserService cashUserService) {
         super(bot_username);
         botToken = requireNonNull(bot_token, "bot_token");
         this.accountService = accountService;
         this.sessionService = sessionService;
+        this.cashUserService = cashUserService;
 
         commandRegisterService.registerCommands(this, new HelpCommand());
     }
@@ -83,6 +86,12 @@ public class CashBot extends TelegramLongPollingCommandBot {
                 }
             }
         }
+    }
+
+    @Override
+    protected boolean filter(final Message message) {
+        cashUserService.getAndUpdateUser(message.getFrom(), message.getChatId());
+        return true;
     }
 
     @Override

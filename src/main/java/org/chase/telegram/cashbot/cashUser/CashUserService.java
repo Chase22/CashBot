@@ -1,6 +1,7 @@
 package org.chase.telegram.cashbot.cashUser;
 
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +13,16 @@ public class CashUserService {
 
     public CashUserService(final CashUserRepository cashUserRepository) {
         this.cashUserRepository = Objects.requireNonNull(cashUserRepository, "cashUserRepository");
+    }
+
+    public void getAndUpdateUser(final User user, final long chatId) {
+        getById(user.getId()).ifPresent(cashUser -> {
+            CashUser newUser = new CashUser(user, chatId);
+            if (newUser.equals(cashUser)) {
+                return;
+            }
+            save(newUser);
+        });
     }
 
     public Optional<CashUser> getById(int userId) {
