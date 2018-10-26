@@ -1,4 +1,4 @@
-package org.chase.telegram.cashbot.commands;
+package org.chase.telegram.cashbot.commands.anotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

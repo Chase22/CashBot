@@ -1,8 +1,12 @@
-package org.chase.telegram.cashbot.commands;
+package org.chase.telegram.cashbot.commands.start;
 
 import lombok.extern.slf4j.Slf4j;
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
+import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
+import org.chase.telegram.cashbot.commands.CashBotReply;
+import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.anotations.DisableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;

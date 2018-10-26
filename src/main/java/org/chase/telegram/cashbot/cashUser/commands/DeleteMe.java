@@ -4,7 +4,7 @@ import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
-import org.chase.telegram.cashbot.commands.EnableCommand;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;

@@ -3,7 +3,7 @@ package org.chase.telegram.cashbot.cashChat.commands;
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
-import org.chase.telegram.cashbot.commands.EnableCommand;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

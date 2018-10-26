@@ -1,6 +1,9 @@
 package org.chase.telegram.cashbot.commands
 
 import org.chase.telegram.cashbot.AbstractSpecification
+import org.chase.telegram.cashbot.commands.start.StartCommand
+import org.chase.telegram.cashbot.commands.start.StartCommandGroup
+import org.chase.telegram.cashbot.commands.start.StartCommandUser
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.bots.AbsSender

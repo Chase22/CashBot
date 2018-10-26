@@ -2,7 +2,7 @@ package org.chase.telegram.cashbot.cashChat.commands;
 
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
-import org.chase.telegram.cashbot.commands.AdminCommand;
+import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
 import org.telegram.telegrambots.meta.api.objects.Message;

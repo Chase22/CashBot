@@ -2,10 +2,10 @@ package org.chase.telegram.cashbot.cashChat.commands;
 
 import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
-import org.chase.telegram.cashbot.commands.AdminCommand;
+import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
-import org.chase.telegram.cashbot.commands.EnableCommand;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;

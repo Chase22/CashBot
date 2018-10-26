@@ -1,4 +1,4 @@
-package org.chase.telegram.cashbot.commands;
+package org.chase.telegram.cashbot.commands.anotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnableCommand {
+public @interface AdminCommand {
 }

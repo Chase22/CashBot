@@ -5,6 +5,7 @@ import org.chase.telegram.cashbot.changelog.Changelog;
 import org.chase.telegram.cashbot.changelog.ChangelogService;
 import org.chase.telegram.cashbot.changelog.FormatException;
 import org.chase.telegram.cashbot.changelog.Version;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

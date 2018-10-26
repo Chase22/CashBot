@@ -1,5 +1,8 @@
-package org.chase.telegram.cashbot.commands;
+package org.chase.telegram.cashbot.commands.start;
 
+import org.chase.telegram.cashbot.commands.CashBotReply;
+import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;

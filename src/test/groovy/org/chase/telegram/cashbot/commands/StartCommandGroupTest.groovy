@@ -4,6 +4,7 @@ import org.chase.telegram.cashbot.AbstractSpecification
 import org.chase.telegram.cashbot.bot.TelegramUserRightService
 import org.chase.telegram.cashbot.cashChat.CashChat
 import org.chase.telegram.cashbot.cashChat.CashChatService
+import org.chase.telegram.cashbot.commands.start.StartCommandGroup
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User

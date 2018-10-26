@@ -2,8 +2,8 @@ package org.chase.telegram.cashbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
 import org.chase.telegram.cashbot.commands.CashCommand;
-import org.chase.telegram.cashbot.commands.DisableCommand;
-import org.chase.telegram.cashbot.commands.EnableCommand;
+import org.chase.telegram.cashbot.commands.anotations.DisableCommand;
+import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 

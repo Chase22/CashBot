@@ -5,6 +5,7 @@ import org.chase.telegram.cashbot.VerificationException
 import org.chase.telegram.cashbot.cashChat.CashChatService
 import org.chase.telegram.cashbot.cashUser.CashUser
 import org.chase.telegram.cashbot.cashUser.CashUserService
+import org.chase.telegram.cashbot.commands.start.StartCommandUser
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
