@@ -15,3 +15,7 @@ spring:
     password: pguser
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %clr(%5p) - %msg%n"
