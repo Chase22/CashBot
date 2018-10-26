@@ -7,6 +7,7 @@ import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 @Component
 public class AccountCashCommandArgumentParser {
@@ -19,14 +20,6 @@ public class AccountCashCommandArgumentParser {
     }
 
     public AccountMessageContext parseContext(Message message, String... arguments) {
-        return parseContext(message, false, arguments);
-    }
-
-    public AccountMessageContext parseContextWithAmount(Message message, String... arguments) {
-        return parseContext(message, true, arguments);
-    }
-
-    private AccountMessageContext parseContext(Message message, boolean requireAmount, String... arguments) {
         final Integer userId = message.getFrom().getId();
         final Long chatId = message.getChatId();
 
@@ -43,11 +36,7 @@ public class AccountCashCommandArgumentParser {
         try {
             amount = Integer.parseUnsignedInt(arguments[arguments.length-1]);
         } catch (NumberFormatException e) {
-            if (requireAmount) {
                 throw new IllegalArgumentException("Amount is not a positive Number");
-            } else {
-                amount = null;
-            }
         }
 
         return AccountMessageContext.builder()
@@ -61,7 +50,7 @@ public class AccountCashCommandArgumentParser {
         if (arguments.length < 2) {
             throw new IllegalArgumentException("Not enough Arguments provided");
         }
-        CashUser userTo = cashUserService.getByUsername(arguments[0]).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + "not found. Is he registered with the bot?"));
+        CashUser userTo = cashUserService.getByUsername(arguments[0]).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + " not found. Is he registered with the bot?"));
         return accountService.getAccount(userTo.getUserId(), message.getChatId()).orElse(null);
     }
 
@@ -70,9 +59,9 @@ public class AccountCashCommandArgumentParser {
             throw new IllegalArgumentException("Not enough Arguments provided");
         }
 
-        final Integer replyId = message.getReplyToMessage().getFrom().getId();
+        final User userReply = message.getReplyToMessage().getFrom();
 
-        CashUser userTo = cashUserService.getById(replyId).orElseThrow(() -> new IllegalArgumentException("User " + arguments[0] + " not found. Is he registered with the bot?"));
+        CashUser userTo = cashUserService.getById(userReply.getId()).orElseThrow(() -> new IllegalArgumentException("User " + userReply.getUserName() + " not found. Is he registered with the bot?"));
         return accountService.getAccount(userTo.getUserId(), message.getChatId()).orElse(null);
 
     }

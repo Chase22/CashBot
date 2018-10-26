@@ -37,7 +37,7 @@ public class SetAmount extends CashCommand {
         final Chat chat = message.getChat();
 
         try {
-            final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
+            final AccountMessageContext context = argumentParser.parseContext(message, arguments);
             final Account account = context.getToAccount();
             account.setBalance(context.getAmount());
             accountService.saveAccount(account);

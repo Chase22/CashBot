@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.account.commands;
 
+import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountException;
 import org.chase.telegram.cashbot.account.AccountMessageContext;
 import org.chase.telegram.cashbot.account.AccountService;
@@ -34,13 +35,21 @@ public class TransferAmount extends CashCommand {
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments) {
         try {
             final Chat chat = message.getChat();
-            final AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
+            final AccountMessageContext context = argumentParser.parseContext(message, arguments);
             if (context.getToAccount() == null) {
                 return Optional.of(new CashBotReply(chat.getId(), "Account not found"));
             }
+
+            Account fromAccount;
+            if(context.getFromAccount().isPresent()) {
+                fromAccount = context.getFromAccount().get();
+            } else {
+                return Optional.of(new CashBotReply(chat.getId(), "Account not found. Are you registered with the bot?"));
+            }
+
             try {
-                accountService.transferTo(context.getFromAccount(), context.getToAccount(), context.getAmount());
-                return Optional.of(new CashBotReply(chat.getId(), "Transfer complete. New Balance: %s", context.getFromAccount().getBalance()));
+                accountService.transferTo(fromAccount, context.getToAccount(), context.getAmount());
+                return Optional.of(new CashBotReply(chat.getId(), "Transfer complete. New Balance: %s", fromAccount.getBalance()));
             } catch (AccountException e) {
                 return Optional.of(new CashBotReply(chat.getId(), e.getMessage()));
             }

@@ -39,8 +39,8 @@ public class AddAmount extends CashCommand {
         final Chat chat = message.getChat();
 
         try {
-            AccountMessageContext context = argumentParser.parseContextWithAmount(message, arguments);
-            Account account = context.getToAccount();
+            final AccountMessageContext context = argumentParser.parseContext(message, arguments);
+            final Account account = context.getToAccount();
             account.addToBalance(context.getAmount());
             accountService.saveAccount(account);
             return Optional.of(new CashBotReply(chat.getId(), "New Balance: %s", account.getBalance()));
