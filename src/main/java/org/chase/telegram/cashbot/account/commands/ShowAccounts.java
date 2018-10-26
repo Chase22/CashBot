@@ -2,9 +2,7 @@ package org.chase.telegram.cashbot.account.commands;
 
 import org.chase.telegram.cashbot.account.Account;
 import org.chase.telegram.cashbot.account.AccountService;
-import org.chase.telegram.cashbot.cashChat.CashChat;
 import org.chase.telegram.cashbot.cashChat.CashChatService;
-import org.chase.telegram.cashbot.cashUser.CashUser;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashBotReply;
 import org.chase.telegram.cashbot.commands.CashCommand;
@@ -49,43 +47,45 @@ public class ShowAccounts extends CashCommand {
     }
 
     private Optional<CashBotReply> handleGroupChat(final Chat chat) {
-        StringBuilder replyBuilder = new StringBuilder();
-        replyBuilder.append(String.format("Accounts for Chat %s %n", chat.getTitle()));
-        for (Account account : accountService.getAccountsByChatId(chat.getId())) {
-            cashUserService.getById(account.getUserId()).ifPresent( cashUser -> {
-                CashChat cashChat = cashChatService.getById(account.getGroupId()).get();
+        return cashChatService.getById(chat.getId()).map(cashChat -> {
+            StringBuilder replyBuilder = new StringBuilder();
+            replyBuilder.append(String.format("Accounts for Chat %s %n", chat.getTitle()));
+            for (Account account : accountService.getAccountsByChatId(chat.getId())) {
+                cashUserService.getById(account.getUserId()).ifPresent(cashUser -> {
 
-                String accountLine = String.format(
-                        "%s: %s %s %n",
-                        cashUser.getDisplayName(),
-                        account.getBalance(),
-                        cashChat.getCurrencyName()
-                );
 
-                replyBuilder.append(accountLine);
-            });
-        }
-        return Optional.of(new CashBotReply(chat.getId(), replyBuilder.toString()));
+                    String accountLine = String.format(
+                            "%s: %s %s %n",
+                            cashUser.getDisplayName(),
+                            account.getBalance(),
+                            cashChat.getCurrencyName()
+                    );
+
+                    replyBuilder.append(accountLine);
+                });
+            }
+            return Optional.of(new CashBotReply(chat.getId(), replyBuilder.toString()));
+        }).orElse(Optional.of(new CashBotReply(chat.getId(), "Bot is not running in this chat")));
 
     }
 
     private Optional<CashBotReply> handleUserChat(final User user) {
         StringBuilder replyBuilder = new StringBuilder();
-        CashUser cashUser = cashUserService.getById(user.getId()).get();
+        return cashUserService.getById(user.getId()).map(cashUser -> {
+            replyBuilder.append(String.format("Accounts for User %s %n", cashUser.getDisplayName()));
+            for (Account account : accountService.getAccountsByUserId(user.getId())) {
+                cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
+                    String accountLine = String.format(
+                            "%s: %s %s %n",
+                            cashChat.getTitle(),
+                            account.getBalance(),
+                            cashChat.getCurrencyName()
+                    );
 
-        replyBuilder.append(String.format("Accounts for User %s %n", cashUser.getDisplayName()));
-        for (Account account : accountService.getAccountsByUserId(user.getId())) {
-            cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
-                String accountLine = String.format(
-                        "%s: %s %s %n",
-                        cashChat.getTitle(),
-                        account.getBalance(),
-                        cashChat.getCurrencyName()
-                );
-
-                replyBuilder.append(accountLine);
-            });
-        }
-        return Optional.of(new CashBotReply(user.getId(), replyBuilder.toString()));
+                    replyBuilder.append(accountLine);
+                });
+            }
+            return Optional.of(new CashBotReply(user.getId(), replyBuilder.toString()));
+        }).orElse(Optional.of(new CashBotReply(user.getId(), "No User found. Please send /start")));
     }
 }
