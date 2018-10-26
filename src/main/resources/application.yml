@@ -15,4 +15,5 @@ spring:
 logging:
   pattern:
     console: "%clr(%5p) - %msg%n"
-  level: info
+  level:
+    root: info
