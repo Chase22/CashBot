@@ -37,7 +37,7 @@ public class CashUser {
     public String getDisplayName() {
         String name = firstName;
         if (lastName != null) {
-            name += lastName;
+            name += " " + lastName;
         }
 
         if (name == null || name.isEmpty()) {

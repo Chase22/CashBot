@@ -1,6 +1,6 @@
 telegram:
   bot:
-    name: rpg_cashbot
+    name: chaseTestBot
 
 server:
   port: ${PORT}

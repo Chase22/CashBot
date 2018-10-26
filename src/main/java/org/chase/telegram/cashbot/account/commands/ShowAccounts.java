@@ -53,7 +53,6 @@ public class ShowAccounts extends CashCommand {
             for (Account account : accountService.getAccountsByChatId(chat.getId())) {
                 cashUserService.getById(account.getUserId()).ifPresent(cashUser -> {
 
-
                     String accountLine = String.format(
                             "%s: %s %s %n",
                             cashUser.getDisplayName(),
@@ -74,7 +73,7 @@ public class ShowAccounts extends CashCommand {
         return cashUserService.getById(user.getId()).map(cashUser -> {
             replyBuilder.append(String.format("Accounts for User %s %n", cashUser.getDisplayName()));
             for (Account account : accountService.getAccountsByUserId(user.getId())) {
-                cashChatService.getById(account.getUserId()).ifPresent( cashChat -> {
+                cashChatService.getById(account.getGroupId()).ifPresent( cashChat -> {
                     String accountLine = String.format(
                             "%s: %s %s %n",
                             cashChat.getTitle(),
