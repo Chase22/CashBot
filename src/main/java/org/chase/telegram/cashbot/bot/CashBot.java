@@ -77,9 +77,9 @@ public class CashBot extends TelegramLongPollingCommandBot {
                     } catch (TelegramApiException e) {
                         log.error("Error executing command", e);
                     }
+                } else {
+                    accountService.handleMessage(message);
                 }
-            } else {
-                accountService.handleMessage(message);
             }
         } else if (update.hasCallbackQuery()) {
             CallbackQuery query = update.getCallbackQuery();
