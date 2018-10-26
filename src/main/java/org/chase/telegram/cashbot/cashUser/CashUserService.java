@@ -17,7 +17,7 @@ public class CashUserService {
 
     public void getAndUpdateUser(final User user, final long chatId) {
         getById(user.getId()).ifPresent(cashUser -> {
-            CashUser newUser = new CashUser(user, chatId);
+            CashUser newUser = new CashUser(user);
             if (newUser.equals(cashUser)) {
                 return;
             }

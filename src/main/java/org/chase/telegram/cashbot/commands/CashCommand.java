@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.bot.TelegramUserRightService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
+import org.chase.telegram.cashbot.commands.anotations.AdminCommand;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.ManCommand;
@@ -59,12 +60,16 @@ public abstract class CashCommand extends ManCommand {
         }
     }
 
-    public abstract Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException;
-
     public Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments, Session session) throws TelegramApiException {
         return executeCommand(absSender, message, arguments);
     }
 
+    public abstract Optional<CashBotReply> executeCommand(AbsSender absSender, Message message, String[] arguments) throws TelegramApiException;
+    public HelpCategory getCategory() {
+        return HelpCategory.Misc;
+    };
+
     @Override
     public void execute(final AbsSender absSender, final User user, final Chat chat, final String[] arguments) {}
+
 }

@@ -9,8 +9,8 @@ import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
+import static liquibase.util.StringUtils.isNotEmpty;
 
 @Component
 @Slf4j
@@ -38,7 +39,7 @@ public class CashBot extends TelegramLongPollingCommandBot {
         this.sessionService = sessionService;
         this.cashUserService = cashUserService;
 
-        commandRegisterService.registerCommands(this, new HelpCommand());
+        commandRegisterService.registerCommands(this);
     }
 
     @Override
@@ -57,17 +58,18 @@ public class CashBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
 
         if (update.hasMessage()) {
-            cashUserService.getAndUpdateUser(update.getMessage().getFrom(), update.getMessage().getChatId());
-            Optional<Session> session = sessionService.getSession(update.getMessage());
+            Message message = update.getMessage();
+            Optional<Session> session = sessionService.getSession(message);
+
             if (session.isPresent()) {
                 String activeCommand = (String) session.get().getAttribute("activeCommand");
-                if (activeCommand != null) {
+                if (isNotEmpty(activeCommand)) {
                     try {
                         ((CashCommand) getRegisteredCommand(activeCommand))
-                                .executeCommand(this, update.getMessage(), null, session.get())
+                                .executeCommand(this, message, null, session.get())
                                 .ifPresent(cashBotReply -> {
                                     try {
-                                        cashBotReply.sendMessage(this, update.getMessage().getMessageId());
+                                        cashBotReply.sendMessage(this, message.getMessageId());
                                     } catch (TelegramApiException e) {
                                         log.error("Couldn't send Error to chat", e);
                                     }
@@ -75,17 +77,37 @@ public class CashBot extends TelegramLongPollingCommandBot {
                     } catch (TelegramApiException e) {
                         log.error("Error executing command", e);
                     }
+                }
+            } else {
+                accountService.handleMessage(message);
+            }
+        } else if (update.hasCallbackQuery()) {
+            CallbackQuery query = update.getCallbackQuery();
+            Optional<Session> session = sessionService.getSession(query.getMessage());
+            if (session.isPresent()) {
+                session.get().setAttribute("callbackQueryId", query.getId());
+                session.get().setAttribute("callbackQueryData", query.getData());
+                session.get().setAttribute("callbackQueryMessageId", query.getMessage().getMessageId());
+                session.get().setAttribute("callbackQueryChatId", query.getMessage().getChatId());
 
-                    log.debug("recieved update: {}", update);
-                    if (update.hasMessage()) {
-                        Message message = update.getMessage();
-
-                        log.debug("found message: {}", message);
-
-                        accountService.handleMessage(message);
+                String activeCommand = (String) session.get().getAttribute("activeCommand");
+                if (isNotEmpty(activeCommand)) {
+                    try {
+                        ((CashCommand) getRegisteredCommand(activeCommand))
+                                .executeCommand(this, query.getMessage(), null, session.get())
+                                .ifPresent(cashBotReply -> {
+                                    try {
+                                        cashBotReply.sendMessage(this);
+                                    } catch (TelegramApiException e) {
+                                        log.error("Couldn't send Error to chat", e);
+                                    }
+                                });
+                    } catch (TelegramApiException e) {
+                        log.error("Error executing command", e);
                     }
                 }
             }
+
         }
     }
 

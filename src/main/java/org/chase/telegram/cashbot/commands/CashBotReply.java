@@ -29,4 +29,8 @@ class CashBotReply{
         }
         sender.execute(reply);
     }
+
+    public void sendMessage(AbsSender sender) throws TelegramApiException {
+        sender.execute(reply);
+    }
 }

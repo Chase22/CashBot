@@ -35,7 +35,7 @@ public class StartCommandUser extends CashCommand {
         if (cashUserService.getById(message.getFrom().getId()).isPresent()) {
             return Optional.of(new CashBotReply(chat.getId(), "Bot is already running"));
         }
-        cashUserService.save(new CashUser(user, chat.getId()));
+        cashUserService.save(new CashUser(user));
         return Optional.of(new CashBotReply(chat.getId(), "User registered"));
     }
 

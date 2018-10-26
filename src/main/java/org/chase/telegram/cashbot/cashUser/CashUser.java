@@ -21,9 +21,9 @@ public class CashUser {
         lastName = cashUserEntity.getLastName();
     }
 
-    public CashUser (User user, long chatId) {
+    public CashUser(User user) {
         userId = user.getId();
-        this.chatId = chatId;
+        this.chatId = user.getId();
         username = user.getUserName();
         firstName = user.getFirstName();
         lastName = user.getLastName();
