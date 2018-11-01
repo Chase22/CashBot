@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import static java.util.Objects.requireNonNull;
-import static liquibase.util.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
 @Slf4j
@@ -61,7 +61,7 @@ public class CashBot extends TelegramLongPollingCommandBot {
             Session session = sessionService.getSession(message);
             String activeCommand = session.getActiveCommand();
 
-            if (isNotEmpty(activeCommand)) {
+            if (isNotBlank(activeCommand)) {
                 executeCommand(message, session, true);
             } else {
                 accountService.handleMessage(message);
@@ -76,7 +76,7 @@ public class CashBot extends TelegramLongPollingCommandBot {
             sessionService.save(session);
 
             String activeCommand = session.getActiveCommand();
-            if (isNotEmpty(activeCommand)) {
+            if (isNotBlank(activeCommand)) {
                 executeCommand(query.getMessage(), session, false);
             }
         }
