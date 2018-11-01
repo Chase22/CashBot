@@ -1,5 +1,6 @@
 package org.chase.telegram.cashbot.session;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static java.time.ZoneOffset.UTC;
 
 @Service
+@Slf4j
 public class SessionService {
 
     private static final long SESSION_TIMEOUT = 30;
@@ -38,10 +40,14 @@ public class SessionService {
         return new Session(chatId, userId);
     }
 
-    public void answerCallback(AbsSender sender, Session session) throws TelegramApiException {
-        sender.execute(new DeleteMessage(
-                session.getCallbackQueryChatId(),
-                session.getCallbackQueryMessageId()));
+    public void answerCallback(AbsSender sender, Session session) {
+        try {
+            sender.execute(new DeleteMessage(
+                    session.getCallbackQueryChatId(),
+                    session.getCallbackQueryMessageId()));
+        } catch (TelegramApiException e) {
+            log.error("Error answering Help Callback", e);
+        }
         delete(session);
     }
 

@@ -14,7 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -62,9 +61,6 @@ public class HelpCategoryCommand extends CashCommand {
             } catch (IllegalArgumentException e) {
                 log.error("Invalid Help Category[{}] selected", helpCategory);
                 return Optional.of(new CashBotReply(message.getChatId(), "Invalid Help Category selected"));
-            } catch (TelegramApiException e) {
-                log.error("Error answering Help Callback", e);
-                return Optional.empty();
             }
         } else {
             return cashUserService.getById(message.getFrom().getId()).map(cashUser -> {
