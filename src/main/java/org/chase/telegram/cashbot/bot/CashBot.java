@@ -1,10 +1,10 @@
 package org.chase.telegram.cashbot.bot;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.account.AccountService;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.CashCommand;
+import org.chase.telegram.cashbot.session.Session;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.Optional;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import static java.util.Objects.requireNonNull;
 import static liquibase.util.StringUtils.isNotEmpty;
@@ -59,63 +58,58 @@ public class CashBot extends TelegramLongPollingCommandBot {
 
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            Optional<Session> session = sessionService.getSession(message);
+            Session session = sessionService.getSession(message);
+            String activeCommand = session.getActiveCommand();
 
-            if (session.isPresent()) {
-                String activeCommand = (String) session.get().getAttribute("activeCommand");
-                if (isNotEmpty(activeCommand)) {
-                    try {
-                        ((CashCommand) getRegisteredCommand(activeCommand))
-                                .executeCommand(this, message, null, session.get())
-                                .ifPresent(cashBotReply -> {
-                                    try {
-                                        cashBotReply.sendMessage(this, message.getMessageId());
-                                    } catch (TelegramApiException e) {
-                                        log.error("Couldn't send Error to chat", e);
-                                    }
-                                });
-                    } catch (TelegramApiException e) {
-                        log.error("Error executing command", e);
-                    }
-                } else {
-                    accountService.handleMessage(message);
-                }
+            if (isNotEmpty(activeCommand)) {
+                executeCommand(message, session, true);
+            } else {
+                accountService.handleMessage(message);
             }
         } else if (update.hasCallbackQuery()) {
             CallbackQuery query = update.getCallbackQuery();
-            Optional<Session> session = sessionService.getSession(query.getMessage());
-            if (session.isPresent()) {
-                session.get().setAttribute("callbackQueryId", query.getId());
-                session.get().setAttribute("callbackQueryData", query.getData());
-                session.get().setAttribute("callbackQueryMessageId", query.getMessage().getMessageId());
-                session.get().setAttribute("callbackQueryChatId", query.getMessage().getChatId());
+            Session session = sessionService.getSession(query.getMessage().getChatId(), query.getFrom().getId());
+            session.setCallbackQueryId(query.getId());
+            session.setCallbackQueryData(query.getData());
+            session.setCallbackQueryMessageId(query.getMessage().getMessageId());
+            session.setCallbackQueryChatId(query.getMessage().getChatId());
+            sessionService.save(session);
 
-                String activeCommand = (String) session.get().getAttribute("activeCommand");
-                if (isNotEmpty(activeCommand)) {
-                    try {
-                        ((CashCommand) getRegisteredCommand(activeCommand))
-                                .executeCommand(this, query.getMessage(), null, session.get())
-                                .ifPresent(cashBotReply -> {
-                                    try {
-                                        cashBotReply.sendMessage(this);
-                                    } catch (TelegramApiException e) {
-                                        log.error("Couldn't send Error to chat", e);
-                                    }
-                                });
-                    } catch (TelegramApiException e) {
-                        log.error("Error executing command", e);
-                    }
-                }
+            String activeCommand = session.getActiveCommand();
+            if (isNotEmpty(activeCommand)) {
+                executeCommand(query.getMessage(), session, false);
             }
-
         }
+    }
+
+    private void executeCommand(final Message message, final Session session, final boolean replyTo) {
+        try {
+            ((CashCommand) getRegisteredCommand(session.getActiveCommand()))
+                    .executeCommand(this, message, null, session)
+                    .ifPresent(cashBotReply -> {
+                        try {
+                            if (replyTo) {
+                                cashBotReply.sendMessage(this, message.getMessageId());
+                            } else {
+                                cashBotReply.sendMessage(this);
+                            }
+                        } catch (TelegramApiRequestException e) {
+                            log.error("Couldn't send Error to chat: " + e.getApiResponse(), e);
+                        } catch (TelegramApiException e) {
+                            log.error("Couldn't send Error to chat", e);
+                        }
+                    });
+        } catch (TelegramApiException e) {
+            log.error("Error executing command", e);
+        }
+        session.setActiveCommand(null);
+        sessionService.save(session);
     }
 
     @Override
     public String getBotToken() {
         return botToken;
     }
-
 
 
 }

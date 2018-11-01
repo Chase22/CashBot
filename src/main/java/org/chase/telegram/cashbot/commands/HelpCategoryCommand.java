@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.session.Session;
 import org.chase.telegram.cashbot.cashUser.CashUserService;
 import org.chase.telegram.cashbot.commands.anotations.EnableCommand;
+import org.chase.telegram.cashbot.session.Session;
 import org.chase.telegram.cashbot.session.SessionService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -53,7 +53,7 @@ public class HelpCategoryCommand extends CashCommand {
 
     @Override
     public Optional<CashBotReply> executeCommand(final AbsSender absSender, final Message message, final String[] arguments, Session session) {
-        final String helpCategory = (String) session.getAttribute("callbackQueryData");
+        final String helpCategory = session.getCallbackQueryData();
         if (helpCategory != null) {
             try {
                 Set<CashCommand> commandSet = commands.get(HelpCategory.valueOf(helpCategory));
@@ -71,7 +71,11 @@ public class HelpCategoryCommand extends CashCommand {
                 CashBotReply reply = new CashBotReply(cashUser.getChatId(), "Please select a help Category");
                 reply.setOriginChat(message.getChatId());
                 reply.getReply().setReplyMarkup(getReplyMarkup());
-                session.setAttribute("activeCommand", COMMAND_IDENTIFIER);
+
+                Session privateSession = sessionService.getSession(cashUser.getChatId(), cashUser.getUserId());
+                privateSession.setActiveCommand(COMMAND_IDENTIFIER);
+                sessionService.save(privateSession);
+
                 return Optional.of(reply);
             }).orElse(Optional.of(new CashBotReply(message.getChatId(), "Please send /start to the bot in a private chat")));
         }

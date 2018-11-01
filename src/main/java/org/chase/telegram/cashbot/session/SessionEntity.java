@@ -1,79 +1,36 @@
 package org.chase.telegram.cashbot.session;
 
-import org.apache.shiro.session.InvalidSessionException;
-import org.apache.shiro.session.Session;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Setter;
+import org.chase.telegram.cashbot.GroupUserIdentifier;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity(name = "cashbot_session")
-public class SessionEntity implements Session {
+@Table(name = "cashbot_session")
+@Data
+@AllArgsConstructor
+public class SessionEntity {
 
-    @Id
-    private Integer id;
-    private Date startTimeStamp;
-    private Date lastAccessTime;
+    @EmbeddedId
+    @Setter(AccessLevel.NONE)
+    GroupUserIdentifier groupUserIdentifier;
 
-    @Override
-    public Serializable getId() {
-        return id;
-    }
+    private LocalDateTime lastAccessed;
 
-    @Override
-    public Date getStartTimestamp() {
-        return startTimeStamp;
-    }
+    private String activeCommand;
 
-    @Override
-    public Date getLastAccessTime() {
-        return lastAccessTime;
-    }
+    private String callbackQueryId;
+    private String callbackQueryData;
+    private int callbackQueryMessageId;
+    private long callbackQueryChatId;
 
-    @Override
-    public long getTimeout() throws InvalidSessionException {
-        return 0;
-    }
-
-    @Override
-    public void setTimeout(final long maxIdleTimeInMillis) throws InvalidSessionException {
-
-    }
-
-    @Override
-    public String getHost() {
-        return null;
-    }
-
-    @Override
-    public void touch() throws InvalidSessionException {
-
-    }
-
-    @Override
-    public void stop() throws InvalidSessionException {
-
-    }
-
-    @Override
-    public Collection<Object> getAttributeKeys() throws InvalidSessionException {
-        return null;
-    }
-
-    @Override
-    public Object getAttribute(final Object key) throws InvalidSessionException {
-        return null;
-    }
-
-    @Override
-    public void setAttribute(final Object key, final Object value) throws InvalidSessionException {
-
-    }
-
-    @Override
-    public Object removeAttribute(final Object key) throws InvalidSessionException {
-        return null;
+    public SessionEntity(final long groupId, final int userId) {
+        this.groupUserIdentifier = new GroupUserIdentifier(groupId, userId);
     }
 }

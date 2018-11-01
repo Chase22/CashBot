@@ -131,12 +131,6 @@
             <artifactId>telegrambotsextensions</artifactId>
             <version>${telegrambots.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.telegram</groupId>
-            <artifactId>telegrambots-chat-session-bot</artifactId>
-            <version>${telegrambots.version}</version>
-        </dependency>
-
 
         <!-- MISC -->
         <dependency>
